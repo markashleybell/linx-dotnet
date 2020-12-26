@@ -1,4 +1,5 @@
 using Linx.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +12,7 @@ namespace Linx.Controllers
         public HomeController(ILogger<HomeController> logger) =>
             _logger = logger;
 
+        [Authorize]
         public IActionResult Index()
         {
             var model = new IndexViewModel();

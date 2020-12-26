@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+            "*.publish.xml": true,
+			"*.sqlproj": true,
+			"*.sqlproj.user": true,
+			"**/*.code-workspace": true,
+			"bin/": true,
+			"obj/": true
+		}
+	}
+}
