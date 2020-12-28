@@ -1,9 +1,11 @@
+using System;
+
 namespace Linx.Domain
 {
     public class User
     {
         public User(
-            int id,
+            Guid id,
             string email,
             string password)
         {
@@ -12,7 +14,7 @@ namespace Linx.Domain
             Password = password;
         }
 
-        public int ID { get; }
+        public Guid ID { get; }
 
         public string Email { get; }
 

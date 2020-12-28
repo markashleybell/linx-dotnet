@@ -1,0 +1,3 @@
+﻿CREATE TYPE [dbo].[GuidList] AS TABLE (
+    [ID] UNIQUEIDENTIFIER
+)

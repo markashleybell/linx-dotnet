@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Tags_Links] (
+    [TagID] UNIQUEIDENTIFIER NOT NULL,
+    [LinkID] UNIQUEIDENTIFIER NOT NULL,
+    PRIMARY KEY ([TagID], [LinkID]),
+    CONSTRAINT [FK_Tags_Links_Tags] FOREIGN KEY ([TagID]) REFERENCES [Tags]([ID]),
+    CONSTRAINT [FK_Tags_Links_Links] FOREIGN KEY ([LinkID]) REFERENCES [Links]([ID])
+)

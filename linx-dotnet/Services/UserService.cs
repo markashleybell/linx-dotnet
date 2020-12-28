@@ -15,10 +15,10 @@ namespace Linx.Services
         public UserService(IRepository repository) =>
             _repository = repository;
 
-        public ClaimsPrincipal GetClaimsPrincipal(int id, string email)
+        public ClaimsPrincipal GetClaimsPrincipal(Guid id, string email)
         {
             var claims = new[] {
-                new Claim(ClaimTypes.Sid, id.ToString(), ClaimValueTypes.Integer32),
+                new Claim(ClaimTypes.Sid, id.ToString()),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, "Member")
             };
@@ -33,20 +33,20 @@ namespace Linx.Services
             return new ClaimsPrincipal(identity);
         }
 
-        public async Task<(bool valid, int? id)> ValidateLogin(string email, string password)
+        public async Task<(bool valid, Guid? id)> ValidateLogin(string email, string password)
         {
             var user = await _repository.FindUserByEmail(email);
 
             if (user == null)
             {
-                return (false, default(int?));
+                return (false, default(Guid?));
             }
 
             var hasher = new PasswordHasher<User>();
 
             var result = hasher.VerifyHashedPassword(user, user.Password, password);
 
-            return result == PasswordVerificationResult.Success ? (true, user.ID) : (false, default(int?));
+            return result == PasswordVerificationResult.Success ? (true, user.ID) : (false, default(Guid?));
         }
     }
 }

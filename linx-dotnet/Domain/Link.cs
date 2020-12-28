@@ -6,7 +6,7 @@ namespace Linx.Domain
 {
     public class Link
     {
-        public Link(int id, string title, string url, string @abstract, IEnumerable<Tag> tags)
+        public Link(Guid id, string title, string url, string @abstract, IEnumerable<Tag> tags)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -25,7 +25,7 @@ namespace Linx.Domain
             Tags = tags ?? Enumerable.Empty<Tag>();
         }
 
-        public int ID { get; }
+        public Guid ID { get; }
 
         public string Title { get; }
 

@@ -60,12 +60,18 @@
     <Folder Include="Properties" />
     <Folder Include="Tables\" />
     <Folder Include="Scripts" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Types" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\users.sql" />
-    <Build Include="Tables\links.sql" />
-    <Build Include="Tables\tags.sql" />
-    <Build Include="Tables\tags_links.sql" />
+    <Build Include="Stored Procedures\MergeTags.sql" />
+    <Build Include="Stored Procedures\UpdateTags.sql" />
+    <Build Include="Types\IntList.sql" />
+    <Build Include="Types\TagList.sql" />
+    <Build Include="Tables\Links.sql" />
+    <Build Include="Tables\Tags.sql" />
+    <Build Include="Tables\Tags_Links.sql" />
+    <Build Include="Tables\Users.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\seed.sql" />

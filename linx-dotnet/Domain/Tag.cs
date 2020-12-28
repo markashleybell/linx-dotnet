@@ -10,12 +10,12 @@ namespace Linx.Domain
         {
         }
 
-        public Tag(int? id, string label)
+        public Tag(Guid? id, string label)
             : this(id, label, default)
         {
         }
 
-        public Tag(int? id, string label, int? useCount)
+        public Tag(Guid? id, string label, int? useCount)
         {
             if (label is null)
             {
@@ -32,7 +32,7 @@ namespace Linx.Domain
             UseCount = useCount ?? 0;
         }
 
-        public int? ID { get; }
+        public Guid? ID { get; }
 
         public string Label { get; }
 

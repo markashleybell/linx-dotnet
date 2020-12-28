@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -5,8 +6,8 @@ namespace Linx.Services
 {
     public interface IUserService
     {
-        ClaimsPrincipal GetClaimsPrincipal(int id, string email);
+        ClaimsPrincipal GetClaimsPrincipal(Guid id, string email);
 
-        Task<(bool valid, int? id)> ValidateLogin(string email, string password);
+        Task<(bool valid, Guid? id)> ValidateLogin(string email, string password);
     }
 }

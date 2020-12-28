@@ -38,6 +38,24 @@ namespace Linx.Data
                 );
             });
 
+        public async Task<IEnumerable<Tag>> GetTags() =>
+            await WithConnectionAsync(conn => {
+                return conn.QueryAsync<Tag>(
+                    sql: "SELECT ID, Label, (SELECT COUNT(*) FROM Tags_Documents td WHERE td.TagID = t.ID) AS UseCount FROM Tags t ORDER BY t.Label"
+                );
+            });
+
+        public async Task MergeTags(Guid id, IEnumerable<Guid> tagIdsToMerge) =>
+            await WithConnectionAsync(conn => {
+                return conn.ExecuteSpAsync(
+                    sql: "MergeTags",
+                    param: new {
+                        TagID = id,
+                        TagIdsToMerge = tagIdsToMerge.AsDataRecords().AsTableValuedParameter("dbo.GuidList")
+                    }
+                );
+            });
+
         private async Task WithConnectionAsync(Func<SqlConnection, Task> action)
         {
             using (var connection = new SqlConnection(_cfg.ConnectionString))
