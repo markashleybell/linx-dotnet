@@ -16,20 +16,20 @@ BEGIN
             SET
                 td.TagID = @TagID
             FROM
-                Tags_Documents td
+                Tags_Links td
             INNER JOIN
                 @TagIdsToMerge m ON m.ID = td.TagID
             WHERE NOT EXISTS (
                 -- If there is already a relationship between this document and the merge target,
                 -- we need to ignore it, otherwise we'll attempt to add a duplicate
-                SELECT * FROM Tags_Documents c WHERE c.TagID = @TagID and c.DocumentID = td.DocumentID
+                SELECT * FROM Tags_Links c WHERE c.TagID = @TagID and c.LinkID = td.LinkID
             )
 
             -- Clean up any join records referencing merged tags which didn't get updated above
             DELETE
                 td
             FROM
-                Tags_Documents td
+                Tags_Links td
             INNER JOIN
                 @TagIdsToMerge m ON m.ID = td.TagID
 

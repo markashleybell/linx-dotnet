@@ -12,40 +12,88 @@ namespace Linx.Data
     public class SqlServerRepository : IRepository
     {
         private readonly Settings _cfg;
-        private readonly int? _userId;
+        private readonly Guid? _userId;
 
         public SqlServerRepository(
             IOptionsMonitor<Settings> optionsMonitor,
-            int? userId)
+            Guid? userId)
         {
             _cfg = optionsMonitor.CurrentValue;
             _userId = userId;
         }
 
-        public async Task<User> FindUserByEmail(string email) =>
+        public async Task<Link> CreateLinkAsync(Link link) =>
+            await WithConnectionAsync(async conn => {
+                var param = new {
+                    UserID = _userId,
+                    link.ID,
+                    link.Title,
+                    link.Url,
+                    link.Abstract,
+                    Tags = link.Tags.AsDataRecords().AsTableValuedParameter("dbo.TagList")
+                };
+
+                await conn.ExecuteSpAsync(
+                    sql: "CreateLink",
+                    param: param
+                );
+
+                return await ReadLinkAsync(link.ID);
+            });
+
+        public async Task<Link> ReadLinkAsync(Guid id) =>
             await WithConnectionAsync(conn => {
-                return conn.QuerySingleOrDefaultAsync<User>(
-                    sql: "SELECT * FROM Users WHERE email = @email",
-                    param: new { email }
+                return conn.QuerySingleOrDefaultSpAsync<Link>(
+                    sql: "ReadLink",
+                    param: new { id }
                 );
             });
 
-        public async Task<IEnumerable<Link>> GetLinksAsync() =>
+        public async Task<IEnumerable<Link>> ReadAllLinksAsync() =>
             await WithConnectionAsync(conn => {
-                return conn.QueryAsync<Link>(
-                    sql: "SELECT * FROM links WHERE user_id = @user_id",
-                    param: new { user_id = _userId }
+                return conn.QuerySpAsync<Link>(
+                    sql: "ReadLinks",
+                    param: new { UserID = _userId }
                 );
             });
 
-        public async Task<IEnumerable<Tag>> GetTags() =>
+        public async Task<Link> UpdateLinkAsync(Link link) =>
+            await WithConnectionAsync(async conn => {
+                var param = new {
+                    UserID = _userId,
+                    link.ID,
+                    link.Title,
+                    link.Url,
+                    link.Abstract,
+                    Tags = link.Tags.AsDataRecords().AsTableValuedParameter("dbo.TagList")
+                };
+
+                await conn.ExecuteSpAsync(
+                    sql: "UpdateLink",
+                    param: param
+                );
+
+                return await ReadLinkAsync(link.ID);
+            });
+
+        public async Task DeleteLinkAsync(Guid id) =>
+            await WithConnectionAsync(conn => {
+                return conn.ExecuteSpAsync(
+                    sql: "DeleteDocument",
+                    param: new {
+                        ID = id
+                    }
+                );
+            });
+
+        public async Task<IEnumerable<Tag>> ReadAllTagsAsync() =>
             await WithConnectionAsync(conn => {
                 return conn.QueryAsync<Tag>(
-                    sql: "SELECT ID, Label, (SELECT COUNT(*) FROM Tags_Documents td WHERE td.TagID = t.ID) AS UseCount FROM Tags t ORDER BY t.Label"
+                    sql: "SELECT ID, Label, (SELECT COUNT(*) FROM Tags_Links td WHERE td.TagID = t.ID) AS UseCount FROM Tags t ORDER BY t.Label"
                 );
             });
 
-        public async Task MergeTags(Guid id, IEnumerable<Guid> tagIdsToMerge) =>
+        public async Task MergeTagsAsync(Guid id, IEnumerable<Guid> tagIdsToMerge) =>
             await WithConnectionAsync(conn => {
                 return conn.ExecuteSpAsync(
                     sql: "MergeTags",
@@ -53,6 +101,14 @@ namespace Linx.Data
                         TagID = id,
                         TagIdsToMerge = tagIdsToMerge.AsDataRecords().AsTableValuedParameter("dbo.GuidList")
                     }
+                );
+            });
+
+        public async Task<User> FindUserByEmail(string email) =>
+            await WithConnectionAsync(conn => {
+                return conn.QuerySingleOrDefaultAsync<User>(
+                    sql: "SELECT * FROM Users WHERE Email = @Email",
+                    param: new { email }
                 );
             });
 

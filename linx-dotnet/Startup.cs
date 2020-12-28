@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using Linx.Data;
 using Linx.Services;
@@ -49,7 +50,7 @@ namespace Linx
             services.AddScoped<IRepository, SqlServerRepository>(sp => {
                 var ctxAccessor = sp.GetRequiredService<IHttpContextAccessor>();
                 var optionsMonitor = sp.GetRequiredService<IOptionsMonitor<Settings>>();
-                var userID = int.TryParse(ctxAccessor.HttpContext.User.FindFirst(ClaimTypes.Sid)?.Value, out var id) ? id : default(int?);
+                var userID = Guid.TryParse(ctxAccessor.HttpContext.User.FindFirst(ClaimTypes.Sid)?.Value, out var id) ? id : default(Guid?);
                 return new SqlServerRepository(optionsMonitor, userID);
             });
 
@@ -78,7 +79,19 @@ namespace Linx
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllerRoute(
+                    name: "index",
+                    pattern: string.Empty,
+                    defaults: new { controller = "Links", action = "Index" }
+                );
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Links", action = "Index" }
+                );
+            });
         }
     }
 }

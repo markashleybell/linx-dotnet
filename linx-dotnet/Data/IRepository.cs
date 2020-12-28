@@ -7,12 +7,20 @@ namespace Linx.Data
 {
     public interface IRepository
     {
+        Task<Link> CreateLinkAsync(Link link);
+
+        Task<Link> ReadLinkAsync(Guid id);
+
+        Task<IEnumerable<Link>> ReadAllLinksAsync();
+
+        Task<Link> UpdateLinkAsync(Link link);
+
+        Task DeleteLinkAsync(Guid id);
+
+        Task<IEnumerable<Tag>> ReadAllTagsAsync();
+
+        Task MergeTagsAsync(Guid id, IEnumerable<Guid> tagIdsToMerge);
+
         Task<User> FindUserByEmail(string email);
-
-        Task<IEnumerable<Link>> GetLinksAsync();
-
-        Task<IEnumerable<Tag>> GetTags();
-
-        Task MergeTags(Guid id, IEnumerable<Guid> tagIdsToMerge);
     }
 }

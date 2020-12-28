@@ -72,8 +72,14 @@
     <Build Include="Tables\Tags.sql" />
     <Build Include="Tables\Tags_Links.sql" />
     <Build Include="Tables\Users.sql" />
+    <Build Include="Stored Procedures\CreateLink.sql" />
+    <Build Include="Stored Procedures\DeleteLink.sql" />
+    <Build Include="Stored Procedures\ReadLink.sql" />
+    <Build Include="Stored Procedures\ReadLinks.sql" />
+    <Build Include="Stored Procedures\UpdateLink.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\seed.sql" />
+    <None Include="db.publish.xml" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 CREATE PROCEDURE [dbo].[UpdateTags]
 (
-    @DocumentID UNIQUEIDENTIFIER,
+    @LinkID UNIQUEIDENTIFIER,
     @Tags [dbo].[TagList] READONLY
 )
 AS
@@ -71,19 +71,19 @@ BEGIN
 
     -- Delete all existing tag joins (some tags may have been deleted)
     DELETE FROM
-        Tags_Documents
+        Tags_Links
     WHERE
-        DocumentID = @DocumentID
+        LinkID = @LinkID
 
     -- Re-add joins for all existing and new tags
     INSERT INTO
-        Tags_Documents (
+        Tags_Links (
             TagID,
-            DocumentID
+            LinkID
         )
     SELECT
         TagID,
-        @DocumentID
+        @LinkID
     FROM
         @TagsToLink
 END

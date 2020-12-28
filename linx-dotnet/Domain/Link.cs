@@ -6,6 +6,12 @@ namespace Linx.Domain
 {
     public class Link
     {
+        public Link(Guid id, string title, string url, string @abstract, string tags)
+            : this(id, title, url, @abstract, default(IEnumerable<Tag>))
+        {
+
+        }
+
         public Link(Guid id, string title, string url, string @abstract, IEnumerable<Tag> tags)
         {
             if (string.IsNullOrWhiteSpace(title))

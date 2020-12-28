@@ -8,6 +8,13 @@
     <p>@User.Identity.Name [@User.FindFirst(ClaimTypes.Sid).Value]</p>
 </div>
 
+<div>
+    @foreach (var link in Model.Links)
+    {
+        <p>@link.Title (@link.Url)</p>
+    }
+</div>
+
 @section scripts {
     <script src="~/js/dist/index.js" asp-append-version="true"></script>
 }
