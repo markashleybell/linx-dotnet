@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[DeletedLinks] (
+    [ID] UNIQUEIDENTIFIER  NOT NULL,
+    [Title] NVARCHAR (256) NOT NULL,
+    [Url] NVARCHAR (256) NOT NULL,
+    [Abstract] NVARCHAR (512) NULL,
+    [Tags] NVARCHAR (1024) NULL,
+    [UserID] UNIQUEIDENTIFIER NOT NULL,
+    [Deleted] DATETIME NOT NULL,
+    CONSTRAINT [PK_DeletedLinks] PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [FK_DeletedLinks_Users] FOREIGN KEY ([UserID]) REFERENCES [Users] ([ID])
+);

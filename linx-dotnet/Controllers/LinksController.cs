@@ -2,23 +2,29 @@ using System;
 using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Models;
+using Linx.Support;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Linx.Controllers
 {
     [Authorize]
-    public class LinksController : Controller
+    public class LinksController : ControllerBase
     {
-        private readonly IRepository _repository;
-
-        public LinksController(IRepository repository) =>
-            _repository = repository;
+        public LinksController(
+            IOptionsMonitor<Settings> optionsMonitor,
+            IRepository repository)
+            : base(
+                optionsMonitor,
+                repository)
+        {
+        }
 
         public async Task<IActionResult> Index()
         {
             var model = new IndexViewModel {
-                Links = await _repository.ReadAllLinksAsync()
+                Links = await Repository.ReadAllLinksAsync(UserID)
             };
 
             return View(model);
@@ -28,7 +34,7 @@ namespace Linx.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var allTags = await _repository.ReadAllTagsAsync();
+            var allTags = await Repository.ReadAllTagsAsync(UserID);
 
             var model = CreateViewModel.From(allTags);
 
@@ -41,14 +47,14 @@ namespace Linx.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.AllTags = await _repository.ReadAllTagsAsync();
+                model.AllTags = await Repository.ReadAllTagsAsync(UserID);
 
                 return View(model);
             }
 
             var create = CreateViewModel.ToLink(model);
 
-            var link = await _repository.CreateLinkAsync(create);
+            var link = await Repository.CreateLinkAsync(UserID, create);
 
             return RedirectToAction(nameof(Index));
         }
@@ -57,14 +63,14 @@ namespace Linx.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
-            var link = await _repository.ReadLinkAsync(id);
+            var link = await Repository.ReadLinkAsync(UserID, id);
 
             if (link == null)
             {
                 return NotFound();
             }
 
-            var allTags = await _repository.ReadAllTagsAsync();
+            var allTags = await Repository.ReadAllTagsAsync(UserID);
 
             return link != null
                 ? (IActionResult)View(UpdateViewModel.From(link, allTags))
@@ -77,14 +83,14 @@ namespace Linx.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.AllTags = await _repository.ReadAllTagsAsync();
+                model.AllTags = await Repository.ReadAllTagsAsync(UserID);
 
                 return View(model);
             }
 
             var update = UpdateViewModel.ToLink(model);
 
-            var link = await _repository.UpdateLinkAsync(update);
+            var link = await Repository.UpdateLinkAsync(UserID, update);
 
             return RedirectToAction(nameof(Update), new { id = link.ID });
         }
@@ -93,7 +99,7 @@ namespace Linx.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _repository.DeleteLinkAsync(id);
+            await Repository.DeleteLinkAsync(UserID, id);
 
             return RedirectToAction(nameof(Index));
         }

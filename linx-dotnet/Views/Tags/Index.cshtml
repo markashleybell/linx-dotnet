@@ -1,0 +1,14 @@
+﻿@model TagIndexViewModel
+
+<div class="row">
+    <div class="col">
+        <div class="tag-cloud">
+
+            @foreach (var tag in Model.Tags)
+            {
+                <a asp-action="Index" asp-controller="Search" asp-route-query="[@tag.Label]" class="badge bg-info badge-tag @Model.GetClass(tag)">@tag.Label <span class="badge bg-light">@tag.UseCount</span></a>
+            }
+
+        </div>
+    </div>
+</div>

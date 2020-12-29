@@ -34,6 +34,16 @@
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </form>
+
+        <hr />
+
+        <form asp-controller="Links" asp-action="Delete" method="post">
+            <input asp-for="ID" type="hidden" />
+
+            <div class="form-group form-group-submit">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -44,5 +54,5 @@
 }
 
 @section scripts {
-    <script src="~/js/dist/edit.js" asp-append-version="true"></script>
+    <script src="~/js/dist/taginput.js" asp-append-version="true"></script>
 }

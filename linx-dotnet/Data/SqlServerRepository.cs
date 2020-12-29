@@ -12,20 +12,14 @@ namespace Linx.Data
     public class SqlServerRepository : IRepository
     {
         private readonly Settings _cfg;
-        private readonly Guid? _userId;
 
-        public SqlServerRepository(
-            IOptionsMonitor<Settings> optionsMonitor,
-            Guid? userId)
-        {
+        public SqlServerRepository(IOptionsMonitor<Settings> optionsMonitor) =>
             _cfg = optionsMonitor.CurrentValue;
-            _userId = userId;
-        }
 
-        public async Task<Link> CreateLinkAsync(Link link) =>
+        public async Task<Link> CreateLinkAsync(Guid userID, Link link) =>
             await WithConnectionAsync(async conn => {
                 var param = new {
-                    UserID = _userId,
+                    userID,
                     link.ID,
                     link.Title,
                     link.Url,
@@ -38,29 +32,29 @@ namespace Linx.Data
                     param: param
                 );
 
-                return await ReadLinkAsync(link.ID);
+                return await ReadLinkAsync(userID, link.ID);
             });
 
-        public async Task<Link> ReadLinkAsync(Guid id) =>
+        public async Task<Link> ReadLinkAsync(Guid userID, Guid id) =>
             await WithConnectionAsync(conn => {
                 return conn.QuerySingleOrDefaultSpAsync<Link>(
                     sql: "ReadLink",
-                    param: new { id }
+                    param: new { userID, id }
                 );
             });
 
-        public async Task<IEnumerable<Link>> ReadAllLinksAsync() =>
+        public async Task<IEnumerable<Link>> ReadAllLinksAsync(Guid userID) =>
             await WithConnectionAsync(conn => {
                 return conn.QuerySpAsync<Link>(
                     sql: "ReadLinks",
-                    param: new { UserID = _userId }
+                    param: new { userID }
                 );
             });
 
-        public async Task<Link> UpdateLinkAsync(Link link) =>
+        public async Task<Link> UpdateLinkAsync(Guid userID, Link link) =>
             await WithConnectionAsync(async conn => {
                 var param = new {
-                    UserID = _userId,
+                    UserID = userID,
                     link.ID,
                     link.Title,
                     link.Url,
@@ -73,31 +67,31 @@ namespace Linx.Data
                     param: param
                 );
 
-                return await ReadLinkAsync(link.ID);
+                return await ReadLinkAsync(userID, link.ID);
             });
 
-        public async Task DeleteLinkAsync(Guid id) =>
+        public async Task DeleteLinkAsync(Guid userID, Guid id) =>
             await WithConnectionAsync(conn => {
                 return conn.ExecuteSpAsync(
-                    sql: "DeleteDocument",
-                    param: new {
-                        ID = id
-                    }
+                    sql: "DeleteLink",
+                    param: new { userID, id }
                 );
             });
 
-        public async Task<IEnumerable<Tag>> ReadAllTagsAsync() =>
+        public async Task<IEnumerable<Tag>> ReadAllTagsAsync(Guid userID) =>
             await WithConnectionAsync(conn => {
                 return conn.QueryAsync<Tag>(
-                    sql: "SELECT ID, Label, (SELECT COUNT(*) FROM Tags_Links td WHERE td.TagID = t.ID) AS UseCount FROM Tags t ORDER BY t.Label"
+                    sql: "SELECT ID, Label, (SELECT COUNT(*) FROM Tags_Links td WHERE td.TagID = t.ID) AS UseCount FROM Tags t WHERE t.UserID = @UserID ORDER BY t.Label",
+                    param: new { userID }
                 );
             });
 
-        public async Task MergeTagsAsync(Guid id, IEnumerable<Guid> tagIdsToMerge) =>
+        public async Task MergeTagsAsync(Guid userID, Guid id, IEnumerable<Guid> tagIdsToMerge) =>
             await WithConnectionAsync(conn => {
                 return conn.ExecuteSpAsync(
                     sql: "MergeTags",
                     param: new {
+                        userID,
                         TagID = id,
                         TagIdsToMerge = tagIdsToMerge.AsDataRecords().AsTableValuedParameter("dbo.GuidList")
                     }

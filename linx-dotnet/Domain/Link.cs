@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Linx.Functions.Functions;
 
 namespace Linx.Domain
 {
     public class Link
     {
         public Link(Guid id, string title, string url, string @abstract, string tags)
-            : this(id, title, url, @abstract, default(IEnumerable<Tag>))
+            : this(id, title, url, @abstract, TagList(tags))
         {
-
         }
 
         public Link(Guid id, string title, string url, string @abstract, IEnumerable<Tag> tags)

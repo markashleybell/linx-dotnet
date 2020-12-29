@@ -18,9 +18,12 @@ BEGIN
         Title = @Title,
         [Url] = @Url,
         Abstract = @Abstract,
-        UserID = @UserID
+        UserID = @UserID,
+        Updated = GETDATE()
     WHERE
         ID = @ID
+    AND
+        UserID = @UserID
 
-    EXEC UpdateTags @ID, @Tags
+    EXEC UpdateTags @UserID, @ID, @Tags
 END

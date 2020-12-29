@@ -25,15 +25,16 @@ namespace Linx
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetValue<string>("ConnectionString");
-            var authenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            const string authenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
             services.AddHttpContextAccessor();
 
             services.Configure<Settings>(Configuration);
 
             services.Configure<CookiePolicyOptions>(options => {
-                options.CheckConsentNeeded = context => false;
-                options.MinimumSameSitePolicy = SameSiteMode.Lax;
+                options.CheckConsentNeeded = _ => false;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
                 options.HttpOnly = HttpOnlyPolicy.Always;
                 options.Secure = CookieSecurePolicy.Always;
             });
@@ -47,12 +48,7 @@ namespace Linx
             services.AddScoped<IDateTimeService, DateTimeService>();
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<IRepository, SqlServerRepository>(sp => {
-                var ctxAccessor = sp.GetRequiredService<IHttpContextAccessor>();
-                var optionsMonitor = sp.GetRequiredService<IOptionsMonitor<Settings>>();
-                var userID = Guid.TryParse(ctxAccessor.HttpContext.User.FindFirst(ClaimTypes.Sid)?.Value, out var id) ? id : default(Guid?);
-                return new SqlServerRepository(optionsMonitor, userID);
-            });
+            services.AddScoped<IRepository, SqlServerRepository>();
 
             services.AddControllersWithViews();
         }

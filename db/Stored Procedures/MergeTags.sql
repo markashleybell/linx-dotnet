@@ -1,6 +1,7 @@
 ﻿
 CREATE PROCEDURE [dbo].[MergeTags]
 (
+    @UserID UNIQUEIDENTIFIER,
     @TagID UNIQUEIDENTIFIER,
     @TagIdsToMerge [dbo].[GuidList] READONLY
 )
@@ -17,6 +18,8 @@ BEGIN
                 td.TagID = @TagID
             FROM
                 Tags_Links td
+            INNER JOIN
+                Tags t ON t.ID = td.TagID AND t.UserID = @UserID
             INNER JOIN
                 @TagIdsToMerge m ON m.ID = td.TagID
             WHERE NOT EXISTS (

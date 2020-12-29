@@ -7,7 +7,9 @@ module.exports = {
         library: 'Linx'
     },
     entry: {
-        'index': './wwwroot/js/index.ts'
+        'index': './wwwroot/js/index.ts',
+        'taginput': './wwwroot/js/taginput.ts',
+        'tagmanager': './wwwroot/js/tagmanager.ts'
     },
     devtool: 'source-map',
     plugins: [

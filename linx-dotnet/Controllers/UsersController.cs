@@ -14,18 +14,15 @@ namespace Linx.Controllers
     public class UsersController : Controller
     {
         private readonly Settings _cfg;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDateTimeService _dateTimeService;
         private readonly IUserService _userService;
 
         public UsersController(
             IOptionsMonitor<Settings> optionsMonitor,
-            IHttpContextAccessor httpContextAccessor,
             IDateTimeService dateTimeService,
             IUserService userService)
         {
             _cfg = optionsMonitor.CurrentValue;
-            _httpContextAccessor = httpContextAccessor;
             _dateTimeService = dateTimeService;
             _userService = userService;
         }
@@ -63,7 +60,7 @@ namespace Linx.Controllers
                 ExpiresUtc = _dateTimeService.Now.AddDays(_cfg.PersistentSessionLengthInDays)
             };
 
-            await _httpContextAccessor.HttpContext.SignInAsync(principal, authenticationProperties);
+            await HttpContext.SignInAsync(principal, authenticationProperties);
 
             var returnUrl = !string.IsNullOrWhiteSpace(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl)
                 ? model.ReturnUrl
@@ -74,7 +71,7 @@ namespace Linx.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await _httpContextAccessor.HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync();
 
             return Redirect(SiteRootUrl);
         }

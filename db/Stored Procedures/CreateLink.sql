@@ -12,21 +12,27 @@ AS
 BEGIN
     SET NOCOUNT ON
 
+    DECLARE @Now DATETIME = GETDATE()
+
     INSERT INTO
         Links (
             ID,
             Title,
             [Url],
             Abstract,
-            UserID
+            UserID,
+            Created,
+            Updated
         )
     VALUES (
         @ID,
         @Title,
         @Url,
         @Abstract,
-        @UserID
+        @UserID,
+        @Now,
+        @Now
     )
 
-    EXEC UpdateTags @ID, @Tags
+    EXEC UpdateTags @UserID, @ID, @Tags
 END

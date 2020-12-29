@@ -1,7 +1,8 @@
 ﻿
 CREATE PROCEDURE [dbo].[ReadLink]
 (
-    @ID UNIQUEIDENTIFIER = NULL
+    @UserID UNIQUEIDENTIFIER,
+    @ID UNIQUEIDENTIFIER
 )
 AS
 BEGIN
@@ -27,6 +28,8 @@ BEGIN
         Links
     WHERE
         ID = @ID
+    AND
+        UserID = @UserID
 
     UPDATE
         link

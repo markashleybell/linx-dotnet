@@ -1,23 +1,29 @@
 using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Models;
+using Linx.Support;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Linx.Controllers
 {
     [Authorize]
-    public class TagsController : Controller
+    public class TagsController : ControllerBase
     {
-        private readonly IRepository _repository;
-
-        public TagsController(IRepository repository) =>
-            _repository = repository;
+        public TagsController(
+            IOptionsMonitor<Settings> optionsMonitor,
+            IRepository repository)
+            : base(
+                optionsMonitor,
+                repository)
+        {
+        }
 
         public async Task<IActionResult> Index()
         {
             var model = new TagIndexViewModel {
-                Tags = await _repository.ReadAllTagsAsync()
+                Tags = await Repository.ReadAllTagsAsync(UserID)
             };
 
             return View(model);
@@ -26,7 +32,7 @@ namespace Linx.Controllers
         public async Task<IActionResult> Manage()
         {
             var model = new TagMergeViewModel {
-                Tags = await _repository.ReadAllTagsAsync()
+                Tags = await Repository.ReadAllTagsAsync(UserID)
             };
 
             return View(model);
@@ -34,7 +40,7 @@ namespace Linx.Controllers
 
         public async Task<IActionResult> Merge(TagMergeViewModel model)
         {
-            await _repository.MergeTagsAsync(model.TagID, model.TagIDsToMerge);
+            await Repository.MergeTagsAsync(UserID, model.TagID, model.TagIDsToMerge);
 
             return RedirectToAction(nameof(Manage));
         }

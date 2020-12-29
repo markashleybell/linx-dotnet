@@ -1,6 +1,7 @@
 ﻿
 CREATE PROCEDURE [dbo].[UpdateTags]
 (
+    @UserID UNIQUEIDENTIFIER,
     @LinkID UNIQUEIDENTIFIER,
     @Tags [dbo].[TagList] READONLY
 )
@@ -30,7 +31,7 @@ BEGIN
     FROM
         Tags t
     INNER JOIN
-        @Tags dt ON dt.[Label] = t.Label
+        @Tags dt ON dt.[Label] = t.Label AND t.UserID = @UserID
 
     -- Create tag records for any new tags (those which aren't already in @TagsToLink)
     INSERT INTO
@@ -49,11 +50,13 @@ BEGIN
     INSERT INTO
         Tags (
             ID,
-            [Label]
+            [Label],
+            UserID
         )
     SELECT
         TagID,
-        [Label]
+        [Label],
+        @UserID
     FROM
         @NewTagData
 
