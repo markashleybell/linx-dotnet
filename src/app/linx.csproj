@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Linx</RootNamespace>
-        <CodeAnalysisRuleSet>..\linx-dotnet.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\..\linx.ruleset</CodeAnalysisRuleSet>
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     </PropertyGroup>
 

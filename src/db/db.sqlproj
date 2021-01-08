@@ -78,6 +78,7 @@
     <Build Include="Stored Procedures\ReadLinks.sql" />
     <Build Include="Stored Procedures\UpdateLink.sql" />
     <Build Include="Tables\DeletedLinks.sql" />
+    <Build Include="Scripts\inspect.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\seed.sql" />

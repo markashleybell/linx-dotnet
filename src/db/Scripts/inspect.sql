@@ -1,0 +1,9 @@
+﻿SELECT * FROM Links
+SELECT * FROM Tags_Links
+SELECT * FROM Tags
+SELECT * FROM DeletedLinks
+
+-- TRUNCATE TABLE Tags_Links
+-- DELETE FROM Links
+-- DELETE FROM Tags
+-- TRUNCATE TABLE DeletedLinks

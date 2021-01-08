@@ -1,5 +1,5 @@
 {
-    "name": "linx-dotnet",
+    "name": "linx",
     "version": "1.0.0",
     "description": "The Linx bookmark manager application.",
     "main": "index.js",
