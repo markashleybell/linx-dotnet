@@ -4,8 +4,8 @@
     "description": "The Linx bookmark manager Chrome Extension.",
     "main": "index.js",
     "scripts": {
-        "build": "webpack --mode=production --display-modules",
-        "watch-ts": "webpack --watch --mode=production"
+        "build": "webpack --mode=production",
+        "watch-ts": "webpack --mode=development --watch"
     },
     "repository": {
         "type": "git",

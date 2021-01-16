@@ -46,14 +46,14 @@ namespace Linx.Controllers
                 return View(model);
             }
 
-            var (valid, id) = await _userService.ValidateLogin(model.Email, model.Password);
+            var (valid, user) = await _userService.ValidateLogin(model.Email, model.Password);
 
             if (!valid)
             {
                 return View(model);
             }
 
-            var principal = _userService.GetClaimsPrincipal(id.Value, model.Email);
+            var principal = _userService.GetClaimsPrincipal(user);
 
             var authenticationProperties = new AuthenticationProperties {
                 IsPersistent = true,

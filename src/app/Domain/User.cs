@@ -7,11 +7,13 @@ namespace Linx.Domain
         public User(
             Guid id,
             string email,
-            string password)
+            string password,
+            string apiKey)
         {
             ID = id;
             Email = email;
             Password = password;
+            ApiKey = apiKey;
         }
 
         public Guid ID { get; }
@@ -19,5 +21,7 @@ namespace Linx.Domain
         public string Email { get; }
 
         public string Password { get; }
+
+        public string ApiKey { get; set; }
     }
 }

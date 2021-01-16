@@ -1,4 +1,5 @@
-﻿SELECT * FROM Links
+﻿SELECT * FROM Users
+SELECT * FROM Links
 SELECT * FROM Tags_Links
 SELECT * FROM Tags
 SELECT * FROM DeletedLinks
@@ -7,3 +8,4 @@ SELECT * FROM DeletedLinks
 -- DELETE FROM Links
 -- DELETE FROM Tags
 -- TRUNCATE TABLE DeletedLinks
+-- DELETE FROM Users

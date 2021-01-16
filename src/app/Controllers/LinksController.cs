@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Linx.Data;
+using Linx.Functions;
 using Linx.Models;
 using Linx.Support;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.Options;
 
 namespace Linx.Controllers
 {
-    [Authorize]
     public class LinksController : ControllerBase
     {
         public LinksController(
@@ -30,7 +30,6 @@ namespace Linx.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -41,7 +40,6 @@ namespace Linx.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateViewModel model)
         {
@@ -57,6 +55,20 @@ namespace Linx.Controllers
             var link = await Repository.CreateLinkAsync(UserID, create);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [RequireApiKey]
+        [HttpPost]
+        public async Task<IActionResult> New(CreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errors = ModelState.AsObject() });
+            }
+
+            var tmp = 0;
+
+            return Json(new { success = true });
         }
 
         [Authorize]

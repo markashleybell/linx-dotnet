@@ -1,5 +1,9 @@
 ﻿@model IndexViewModel
 
+@using System.Security.Claims
+
+@User.FindFirst(ClaimTypes.UserData)
+
 <div>
     @foreach (var link in Model.Links)
     {

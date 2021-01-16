@@ -22,5 +22,7 @@ namespace Linx.Data
         Task MergeTagsAsync(Guid userID, Guid id, IEnumerable<Guid> tagIdsToMerge);
 
         Task<User> FindUserByEmail(string email);
+
+        Task<User> FindUserByApiKey(string apiKey);
     }
 }

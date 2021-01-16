@@ -106,6 +106,14 @@ namespace Linx.Data
                 );
             });
 
+        public async Task<User> FindUserByApiKey(string apiKey) =>
+            await WithConnectionAsync(conn => {
+                return conn.QuerySingleOrDefaultAsync<User>(
+                    sql: "SELECT * FROM Users WHERE ApiKey = @ApiKey",
+                    param: new { apiKey }
+                );
+            });
+
         private async Task WithConnectionAsync(Func<SqlConnection, Task> action)
         {
             using (var connection = new SqlConnection(_cfg.ConnectionString))

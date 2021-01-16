@@ -1,4 +1,3 @@
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Linx.Data;
@@ -15,12 +14,13 @@ namespace Linx.Services
         public UserService(IRepository repository) =>
             _repository = repository;
 
-        public ClaimsPrincipal GetClaimsPrincipal(Guid id, string email)
+        public ClaimsPrincipal GetClaimsPrincipal(User user)
         {
             var claims = new[] {
-                new Claim(ClaimTypes.Sid, id.ToString()),
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, "Member")
+                new Claim(ClaimTypes.Sid, user.ID.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, "Member"),
+                new Claim(ClaimTypes.UserData, user.ApiKey)
             };
 
             var identity = new ClaimsIdentity(
@@ -33,20 +33,29 @@ namespace Linx.Services
             return new ClaimsPrincipal(identity);
         }
 
-        public async Task<(bool valid, Guid? id)> ValidateLogin(string email, string password)
+        public async Task<(bool valid, User user)> ValidateLogin(string email, string password)
         {
             var user = await _repository.FindUserByEmail(email);
 
-            if (user == null)
+            if (user is null)
             {
-                return (false, default(Guid?));
+                return (false, default(User));
             }
 
             var hasher = new PasswordHasher<User>();
 
             var result = hasher.VerifyHashedPassword(user, user.Password, password);
 
-            return result == PasswordVerificationResult.Success ? (true, user.ID) : (false, default(Guid?));
+            return result == PasswordVerificationResult.Success ? (true, user) : (false, default(User));
+        }
+
+        public async Task<(bool valid, User user)> ValidateApiKey(string apiKey)
+        {
+            var user = await _repository.FindUserByApiKey(apiKey);
+
+            return user is null
+                ? (false, default(User))
+                : (true, user);
         }
     }
 }

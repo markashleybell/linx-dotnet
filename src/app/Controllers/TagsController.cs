@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 
 namespace Linx.Controllers
 {
-    [Authorize]
     public class TagsController : ControllerBase
     {
         public TagsController(
