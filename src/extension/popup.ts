@@ -1,10 +1,4 @@
-interface LinxChromeExtension {
-    getPageDetails(callback: (message: any) => void): void;
-}
-
-interface Window {
-    LinxChromeExtension: LinxChromeExtension;
-}
+import { settings } from './common';
 
 interface PageDetails {
     title: string;
@@ -95,7 +89,7 @@ window.addEventListener("load", (_) => {
     chrome.runtime.getBackgroundPage((eventPage) => {
         // Call the getPageInfo function in the event page, passing in our onPageDetailsReceived
         // function as the callback. This injects content.js into the current tab's HTML
-        eventPage.LinxChromeExtension.getPageDetails(onPageDetailsReceived);
+        // eventPage.LinxChromeExtension.getPageDetails(onPageDetailsReceived);
     });
 
     hideStatus();

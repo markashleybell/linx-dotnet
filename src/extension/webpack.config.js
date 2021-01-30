@@ -10,7 +10,7 @@ module.exports = {
     entry: {
         'content': './content.ts',
         'event': './event.ts',
-        'options': './options.ts',
+        'settings': './settings.ts',
         'popup': './popup.ts'
     },
     devtool: 'source-map',
@@ -20,7 +20,7 @@ module.exports = {
             patterns: [
                 { from: 'icon.png', to: '.' },
                 { from: 'manifest.json', to: '.' },
-                { from: 'options.html', to: '.' },
+                { from: 'settings.html', to: '.' },
                 { from: 'popup.html', to: '.' },
 
                 { from: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', to: './vendor' },
