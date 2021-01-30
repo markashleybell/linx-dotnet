@@ -29,9 +29,7 @@ async function post(url: string, options: RequestInit) {
     return response.ok ? json : Promise.reject(json);
 }
 
-// When the popup HTML has loaded
 window.addEventListener("load", () => {
-
     chrome.storage.sync.get([...settings.keys()], stored => {
         form.addEventListener("submit", async (event: Event) => {
             event.preventDefault();
