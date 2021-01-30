@@ -9,11 +9,10 @@ module.exports = {
     },
     entry: {
         'content': './content.ts',
-        'event': './event.ts',
         'settings': './settings.ts',
         'popup': './popup.ts'
     },
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     plugins: [
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({

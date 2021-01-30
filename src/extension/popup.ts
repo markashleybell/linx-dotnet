@@ -29,8 +29,12 @@ async function post(url: string, options: RequestInit) {
     return response.ok ? json : Promise.reject(json);
 }
 
+chrome.runtime.onMessage.addListener(onPageDetailsReceived);
+
 window.addEventListener("load", () => {
     chrome.storage.sync.get([...settings.keys()], stored => {
+        chrome.tabs.executeScript({ file: "content.js" });
+
         form.addEventListener("submit", async (event: Event) => {
             event.preventDefault();
         
@@ -53,11 +57,4 @@ window.addEventListener("load", () => {
             }
         });
     });
-
-    // // Get the event page
-    // chrome.runtime.getBackgroundPage((eventPage) => {
-    //     // Call the getPageInfo function in the event page, passing in our onPageDetailsReceived
-    //     // function as the callback. This injects content.js into the current tab's HTML
-    //     // eventPage.LinxChromeExtension.getPageDetails(onPageDetailsReceived);
-    // });
 });

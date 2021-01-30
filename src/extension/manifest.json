@@ -4,13 +4,12 @@
     "description": "Save a bookmark to Linx.",
     "version": "0.9",
     "options_page": "settings.html",
-    
     "action": {
         "default_icon": "icon.png",
         "default_popup": "popup.html"
     },
     "permissions": [
-        "tabs",
+        "activeTab",
         "storage"
     ],
     "host_permissions": [
