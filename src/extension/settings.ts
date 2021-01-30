@@ -1,4 +1,4 @@
-import { Setting, settings, showStatus } from './common';
+import { Setting, settings, showSuccessStatus } from './common';
 
 const ui = document.getElementById('settings-ui');
 const status = document.getElementById('status');
@@ -20,7 +20,7 @@ function uiElements(setting: Setting, label: string, value?: string): [HTMLEleme
     return [containerTemplate.content.firstChild as HTMLElement, input as HTMLInputElement];
 }
 
-window.addEventListener("load", _ => {
+window.addEventListener("load", () => {
     chrome.storage.sync.get([...settings.keys()], stored => {
         for (const [setting, metaData] of settings) {
             const [container, input] = uiElements(setting, metaData.name, stored[setting]);
@@ -30,9 +30,9 @@ window.addEventListener("load", _ => {
     });
 });
 
-saveButton.addEventListener('click', _ => {
+saveButton.addEventListener('click', () => {
     const storageValues = [...inputs].reduce((o: any, [k, v]) => { o[k] = v.value; return o; }, {});
     chrome.storage.sync.set(storageValues, () => {
-        showStatus(status, 'Settings saved');
+        showSuccessStatus(status, 'Settings saved', 1000);
     });
 });

@@ -22,6 +22,7 @@ module.exports = {
                 { from: 'manifest.json', to: '.' },
                 { from: 'settings.html', to: '.' },
                 { from: 'popup.html', to: '.' },
+                { from: 'styles.css', to: '.' },
 
                 { from: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', to: './vendor' },
                 { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css', to: './vendor' }

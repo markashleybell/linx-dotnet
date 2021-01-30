@@ -6,7 +6,10 @@ export interface Window {
     LinxChromeExtension: LinxChromeExtension;
 }
 
-export type Setting  = 'api-url' | 'api-key';
+export enum Setting {
+    ApiUrl = 'api-url',
+    ApiKey = 'api-key'
+}
 
 export interface SettingMetadata {
     name: string;
@@ -14,12 +17,37 @@ export interface SettingMetadata {
 
 export const settings: Map<Setting, SettingMetadata> = new Map();
 
-settings.set('api-url', { name: 'API Endpoint URL' });
-settings.set('api-key', { name: 'API Key' });
+settings.set(Setting.ApiUrl, { name: 'API Endpoint URL' });
+settings.set(Setting.ApiKey, { name: 'API Key' });
 
-export function showStatus(container: HTMLElement, status: string, delay?: number) {
-    container.innerHTML = status;
-    window.setTimeout(() => { 
-        container.innerHTML = ''; 
-    }, delay || 1000);
+export function hideStatus(element: HTMLElement) {
+    element.classList.add("status-hidden");
+}
+
+function showStatus(element: HTMLElement, message: string, statusClass: string, autoHideDelay?: number) {
+    element.classList.remove(
+        "status-hidden",
+        "label-default",
+        "label-success",
+        "label-danger"
+    );
+
+    element.classList.add(statusClass);
+    element.innerText = message;
+
+    if (autoHideDelay) {
+        window.setTimeout(() => hideStatus(element), autoHideDelay);
+    }
+}
+
+export function showInfoStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
+    showStatus(element, message, "label-default", autoHideDelay);
+}
+
+export function showSuccessStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
+    showStatus(element, message, "label-success", autoHideDelay);
+}
+
+export function showErrorStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
+    showStatus(element, message, "label-danger", autoHideDelay);
 }
