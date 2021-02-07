@@ -28,6 +28,7 @@ namespace Linx.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Login(string returnUrl)
         {
             var model = new LoginViewModel {
@@ -37,8 +38,8 @@ namespace Linx.Controllers
             return View(model);
         }
 
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -69,6 +70,7 @@ namespace Linx.Controllers
             return Redirect(returnUrl);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

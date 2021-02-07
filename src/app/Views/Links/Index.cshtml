@@ -2,12 +2,12 @@
 
 @using System.Security.Claims
 
-@User.FindFirst(ClaimTypes.UserData)
+@*@User.FindFirst(ClaimTypes.UserData)*@
 
 <div>
     @foreach (var link in Model.Links)
     {
-        <p>@link.Title (@link.Url) - @link.Abstract | @string.Join(",", link.Tags.Select(t => t.Label))</p> <a asp-controller="Links" asp-action="Update" asp-route-id="@link.ID">Edit</a>
+    <p>@link.Title (@link.Url) - @link.Abstract | @string.Join(",", link.Tags.Select(t => t.Label)) <br /><a asp-controller="Links" asp-action="Update" asp-route-id="@link.ID">Edit</a></p>
     }
 </div>
 

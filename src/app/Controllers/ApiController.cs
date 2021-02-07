@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Linx.Data;
@@ -32,7 +33,18 @@ namespace Linx.Controllers
                 return BadRequest(new { errors = ModelState.AsObject() });
             }
 
-            var tmp = 0;
+            var apiKey = GetApiKey();
+
+            var user = await Repository.FindUserByApiKey(apiKey);
+
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+
+            var create = CreateViewModel.ToLink(model);
+
+            await Repository.CreateLinkAsync(user.ID, create);
 
             return Json(new { success = true });
         }
@@ -41,9 +53,7 @@ namespace Linx.Controllers
         [HttpPost]
         public async Task<IActionResult> Tags()
         {
-            // We already know the key is present because of [RequireApiKey],
-            // so we can ignore the first parameter (success) here
-            var (_, apiKey) = HttpContext.TryGetApiKey();
+            var apiKey = GetApiKey();
 
             var user = await Repository.FindUserByApiKey(apiKey);
 
@@ -52,6 +62,13 @@ namespace Linx.Controllers
             var tagLabels = tags.Select(t => t.Label);
 
             return Json(tagLabels);
+        }
+
+        private string GetApiKey()
+        {
+            var (success, apiKey) = HttpContext.TryGetApiKey();
+
+            return !success ? throw new UnauthorizedAccessException() : apiKey;
         }
     }
 }

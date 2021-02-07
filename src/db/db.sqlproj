@@ -62,6 +62,7 @@
     <Folder Include="Scripts" />
     <Folder Include="Stored Procedures" />
     <Folder Include="Types" />
+    <Folder Include="Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\MergeTags.sql" />
@@ -79,6 +80,7 @@
     <Build Include="Stored Procedures\UpdateLink.sql" />
     <Build Include="Tables\DeletedLinks.sql" />
     <None Include="Scripts\inspect.sql" />
+    <Build Include="Triggers\UpdateDisplayTags.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\seed.sql" />

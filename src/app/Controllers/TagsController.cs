@@ -18,6 +18,7 @@ namespace Linx.Controllers
         {
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var model = new TagIndexViewModel {
@@ -27,6 +28,7 @@ namespace Linx.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Manage()
         {
             var model = new TagMergeViewModel {
@@ -36,6 +38,7 @@ namespace Linx.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Merge(TagMergeViewModel model)
         {
             await Repository.MergeTagsAsync(UserID, model.TagID, model.TagIDsToMerge);

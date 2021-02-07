@@ -21,6 +21,7 @@ namespace Linx.Controllers
         {
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var model = new IndexViewModel {
@@ -57,21 +58,6 @@ namespace Linx.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [RequireApiKey]
-        [HttpPost]
-        public async Task<IActionResult> New(CreateViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Json(new { errors = ModelState.AsObject() });
-            }
-
-            var tmp = 0;
-
-            return Json(new { success = true });
-        }
-
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
@@ -89,7 +75,6 @@ namespace Linx.Controllers
                 : NotFound();
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Update(UpdateViewModel model)
         {
@@ -107,7 +92,6 @@ namespace Linx.Controllers
             return RedirectToAction(nameof(Update), new { id = link.ID });
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
