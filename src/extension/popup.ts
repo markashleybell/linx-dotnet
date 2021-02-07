@@ -1,4 +1,5 @@
 import { hideStatus, Setting, settings, showInfoStatus, showErrorStatus, showSuccessStatus } from './common';
+import { TagInput } from 'mab-bootstrap-taginput';
 
 interface PageDetails {
     title: string;
@@ -47,9 +48,40 @@ async function post(url: string, options: RequestInit) {
 
 chrome.runtime.onMessage.addListener(onPageDetailsReceived);
 
-window.addEventListener("load", () => {
-    chrome.storage.sync.get([...settings.keys()], stored => {
+window.addEventListener("load", () => {    
+
+    chrome.storage.sync.get([...settings.keys()], async (stored) => {
         chrome.tabs.executeScript({ file: "content.js" });
+
+        try {
+            const tagsUrl = stored[Setting.ApiUrl] + '/tags';
+
+            const response = await post(tagsUrl, {
+                method: "POST",
+                headers: {
+                    ApiKey: stored[Setting.ApiKey],
+                }
+            });
+    
+            new TagInput<string>({
+                input: tagsInput,
+                data: response || [],
+                getId: item => item,
+                getLabel: item => item,
+                newItemFactory: label => Promise.resolve(label),
+                itemTemplate: '<div class="{{globalCssClassPrefix}}-tag" data-id="{{id}}" data-label="{{label}}">{{label}} <i class="{{globalCssClassPrefix}}-removetag bi bi-x"></i></div>'
+            });
+        } catch (e) {
+            const errors = (e as ApiErrorResponse).errors;
+
+            for (const error of errors) {
+                const input = inputs[error.key];
+                (input.nextElementSibling as HTMLDivElement).innerText = error.value.join('');
+                input.classList.add('is-invalid');
+            }
+
+            showErrorStatus(status, "Error");
+        }
 
         form.addEventListener("submit", async (event: Event) => {
             event.preventDefault();
@@ -61,16 +93,18 @@ window.addEventListener("load", () => {
             showInfoStatus(status, "Saving...");
         
             try {
-                const response = await post(stored[Setting.ApiUrl], {
+                const createUrl = stored[Setting.ApiUrl] + '/create';
+
+                const response = await post(createUrl, {
                     method: "POST",
                     body: new FormData(form),
                     headers: {
                         ApiKey: stored[Setting.ApiKey],
-                    },
+                    }
                 });
         
                 showSuccessStatus(status, "Saved", 1000);
-                
+
                 // window.setTimeout(window.close, 1000);
             } catch (e) {
                 const errors = (e as ApiErrorResponse).errors;

@@ -9,5 +9,6 @@ new TagInput<string>({
     data: _ALL_TAGS || [],
     getId: item => item,
     getLabel: item => item,
-    newItemFactory: label => Promise.resolve(label)
+    newItemFactory: label => Promise.resolve(label),
+    itemTemplate: '<div class="{{globalCssClassPrefix}}-tag" data-id="{{id}}" data-label="{{label}}">{{label}} <i class="{{globalCssClassPrefix}}-removetag bi bi-x"></i></div>'
 });

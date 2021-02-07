@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Models;
 using Linx.Support;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

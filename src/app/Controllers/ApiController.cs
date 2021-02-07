@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Functions;
@@ -34,6 +35,23 @@ namespace Linx.Controllers
             var tmp = 0;
 
             return Json(new { success = true });
+        }
+
+        [RequireApiKey]
+        [HttpPost]
+        public async Task<IActionResult> Tags()
+        {
+            // We already know the key is present because of [RequireApiKey],
+            // so we can ignore the first parameter (success) here
+            var (_, apiKey) = HttpContext.TryGetApiKey();
+
+            var user = await Repository.FindUserByApiKey(apiKey);
+
+            var tags = await Repository.ReadAllTagsAsync(user.ID);
+
+            var tagLabels = tags.Select(t => t.Label);
+
+            return Json(tagLabels);
         }
     }
 }

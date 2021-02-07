@@ -4,25 +4,24 @@ using Linx.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using static Linx.Functions.Functions;
 
 namespace Linx.Support
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
     public class RequireApiKeyAttribute : Attribute, IAsyncActionFilter
     {
-        private const string ApiKeyHeaderName = "ApiKey";
-
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var ctx = context.HttpContext;
+            var (apiKeyPresent, apiKey) = context.HttpContext.TryGetApiKey();
 
-            if (!ctx.Request.Headers.TryGetValue(ApiKeyHeaderName, out var apiKey))
+            if (!apiKeyPresent)
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
 
-            var userService = ctx.RequestServices.GetRequiredService<IUserService>();
+            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
 
             var (valid, _) = await userService.ValidateApiKey(apiKey);
 
