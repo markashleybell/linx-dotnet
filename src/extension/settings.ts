@@ -8,10 +8,10 @@ const inputs: Map<Setting, HTMLInputElement> = new Map();
 
 function uiElements(setting: Setting, label: string, value?: string): [HTMLElement, HTMLInputElement] {
     const containerTemplate = document.createElement('template');
-    containerTemplate.innerHTML = `<p><label for="${setting}">${label}</label><br></p>`;
+    containerTemplate.innerHTML = `<div class="mb-3"><label for="${setting}" class="form-label">${label}</label></div>`;
 
     const inputTemplate = document.createElement('template');
-    inputTemplate.innerHTML = `<input type="text" id="${setting}" name="${setting}" value="${value || ''}"/>`;
+    inputTemplate.innerHTML = `<input type="text" class="form-control" id="${setting}" name="${setting}" value="${value || ''}"/>`;
 
     const input = inputTemplate.content.firstChild.cloneNode();
 
@@ -20,7 +20,7 @@ function uiElements(setting: Setting, label: string, value?: string): [HTMLEleme
     return [containerTemplate.content.firstChild as HTMLElement, input as HTMLInputElement];
 }
 
-window.addEventListener("load", () => {
+window.addEventListener('load', () => {
     chrome.storage.sync.get([...settings.keys()], stored => {
         for (const [setting, metaData] of settings) {
             const [container, input] = uiElements(setting, metaData.name, stored[setting]);
@@ -30,9 +30,12 @@ window.addEventListener("load", () => {
     });
 });
 
-saveButton.addEventListener('click', () => {
+saveButton.addEventListener('click', (event: Event) => {
+    event.preventDefault();
+    
     const storageValues = [...inputs].reduce((o: any, [k, v]) => { o[k] = v.value; return o; }, {});
+
     chrome.storage.sync.set(storageValues, () => {
-        showSuccessStatus(status, 'Settings saved', 1000);
+        showSuccessStatus(status, 'Saved', 1000);
     });
 });

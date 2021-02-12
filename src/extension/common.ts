@@ -27,9 +27,9 @@ export function hideStatus(element: HTMLElement) {
 function showStatus(element: HTMLElement, message: string, statusClass: string, autoHideDelay?: number) {
     element.classList.remove(
         "status-hidden",
-        "label-default",
-        "label-success",
-        "label-danger"
+        "bg-secondary",
+        "bg-success",
+        "bg-danger"
     );
 
     element.classList.add(statusClass);
@@ -41,13 +41,13 @@ function showStatus(element: HTMLElement, message: string, statusClass: string, 
 }
 
 export function showInfoStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
-    showStatus(element, message, "label-default", autoHideDelay);
+    showStatus(element, message, "bg-secondary", autoHideDelay);
 }
 
 export function showSuccessStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
-    showStatus(element, message, "label-success", autoHideDelay);
+    showStatus(element, message, "bg-success", autoHideDelay);
 }
 
 export function showErrorStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
-    showStatus(element, message, "label-danger", autoHideDelay);
+    showStatus(element, message, "bg-danger", autoHideDelay);
 }

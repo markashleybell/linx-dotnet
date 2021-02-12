@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Linx Settings</title>
-        <link rel="stylesheet" type="text/css" href="vendor/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="styles.css">
-    </head>
-    <body>
-        <div id="settings-ui"></div>
-        <p><button id="save">Save</button></p>
-        <p id="status" class="status status-hidden"></p>
-        <script src="settings.js"></script>
-    </body>
+
+<head>
+    <title>Linx Settings</title>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <form class="pb-3">
+                    <div id="settings-ui"></div>
+                    <button class="btn btn-primary" id="save">Save</button>
+                    <span id="status" class="badge status-hidden"></span>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="settings.js"></script>
+</body>
+
 </html>

@@ -80,6 +80,10 @@
     color: #fff;
 }
 
+.badge {
+    margin-left: 1rem;
+}
+
 .status-hidden {
     display: none;
 }

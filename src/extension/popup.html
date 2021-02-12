@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="vendor/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="vendor/bootstrap-icons.css">
-        <link rel="stylesheet" type="text/css" href="styles.css">
-        <style>
-            body { 
-                min-width: 420px; 
-                overflow-x: hidden; 
-            }
 
-            #addbookmark {
-                padding: 15px 15px 0 15px;
-            }
+<head>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            min-width: 420px;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
 
-            #save {
-                margin-right: 20px;
-            }
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <form class="pt-2 pb-3" id="bookmark-details">
+                    <div class="mb-2">
+                        <label class="form-label" for="Title">Title</label>
+                        <input class="form-control" type="text" id="title" name="Title" size="50" value=""
+                            placeholder="Title" aria-describedby="url-feedback" />
+                        <div id="title-feedback" class="invalid-feedback">&nbsp;</div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="Url">Url</label>
+                        <input class="form-control" type="text" id="url" name="Url" size="50" value="" placeholder="Url"
+                            aria-describedby="url-feedback" />
+                        <div id="url-feedback" class="invalid-feedback">&nbsp;</div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="Tags">Tags</label>
+                        <input class="form-control" type="text" id="tags" name="Tags" size="50" value=""
+                            placeholder="Tags" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="Abstract">Abstract</label>
+                        <textarea class="form-control" id="abstract" name="Abstract" rows="5" cols="35"
+                            placeholder="Abstract"></textarea>
+                    </div>
+                    <button class="btn btn-primary" id="save" type="submit">Save Bookmark</button>
+                    <span id="status" class="badge status-hidden"></span>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="vendor/bootstrap.bundle.min.js"></script>
+    <script src="popup.js"></script>
+</body>
 
-            .label {
-                padding-right: 8px;
-            }
-        </style>
-    </head>
-    <body>
-        <form id="bookmark-details">
-            <div class="form-group">
-                <label for="Title">Title</label>
-                <input class="form-control" type="text" id="title" name="Title" size="50" value="" placeholder="Title" />
-            </div>
-            <div class="form-group">
-                <label for="Url">Url</label>
-                <input class="form-control" type="text" id="url" name="Url" size="50" value="" placeholder="Url" aria-describedby="url-feedback" />
-                <div id="url-feedback" class="invalid-feedback">&nbsp;</div>
-            </div>
-            <div class="form-group">
-                <label for="Tags">Tags</label>
-                <input class="form-control" type="text" id="tags" name="Tags" size="50" value="" placeholder="Tags" />
-            </div>
-            <div class="form-group">
-                <label for="Abstract">Abstract</label>
-                <textarea class="form-control" id="abstract" name="Abstract" rows="5" cols="35" placeholder="Abstract"></textarea>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-primary" id="save" type="submit" value="Save Bookmark" /> <span id="status" class="status status-hidden label">Working...</span>
-            </div>
-        </form>
-        <script src="vendor/bootstrap.bundle.min.js"></script>
-        <script src="popup.js"></script>
-    </body>
 </html>

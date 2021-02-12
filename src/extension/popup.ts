@@ -16,14 +16,12 @@ interface ApiErrorResponse {
     errors: ApiValidationError[];
 }
 
-const form = document.getElementById("bookmark-details") as HTMLFormElement;
-
-const status = document.getElementById("status") as HTMLSpanElement;
-
-const titleInput = document.getElementById("title") as HTMLInputElement;
-const urlInput = document.getElementById("url") as HTMLInputElement;
-const tagsInput = document.getElementById("tags") as HTMLInputElement;
-const abstractInput = document.getElementById("abstract") as HTMLInputElement;
+const form = document.getElementById('bookmark-details') as HTMLFormElement;
+const status = document.getElementById('status') as HTMLSpanElement;
+const titleInput = document.getElementById('title') as HTMLInputElement;
+const urlInput = document.getElementById('url') as HTMLInputElement;
+const tagsInput = document.getElementById('tags') as HTMLInputElement;
+const abstractInput = document.getElementById('abstract') as HTMLInputElement;
 
 const inputs: Record<string, HTMLInputElement> = {
     'Title': titleInput,
@@ -40,6 +38,15 @@ function onPageDetailsReceived(pageDetails: PageDetails) {
     abstractInput.value = pageDetails.abstract;
 }
 
+function validateSettings(settings: { [key: string]: any }): [boolean, string, string] {
+    const apiUrl = settings[Setting.ApiUrl]?.trim();
+    const apiKey = settings[Setting.ApiKey]?.trim();
+
+    return apiUrl && apiKey 
+        ? [true, apiUrl, apiKey]
+        : [false, null, null];
+}
+
 async function post(url: string, options: RequestInit) {
     const response = await fetch(url, options);
     const json = await response.json();
@@ -48,18 +55,24 @@ async function post(url: string, options: RequestInit) {
 
 chrome.runtime.onMessage.addListener(onPageDetailsReceived);
 
-window.addEventListener("load", () => {    
-
+window.addEventListener('load', () => {
     chrome.storage.sync.get([...settings.keys()], async (stored) => {
-        chrome.tabs.executeScript({ file: "content.js" });
+        const [settingsAreValid, apiUrl, apiKey] = validateSettings(stored);
+
+        if (!settingsAreValid) {
+            chrome.runtime.openOptionsPage();
+            return;
+        }
+
+        chrome.tabs.executeScript({ file: 'content.js' });
 
         try {
-            const tagsUrl = stored[Setting.ApiUrl] + '/tags';
+            const tagsUrl = apiUrl + '/tags';
 
             const response = await post(tagsUrl, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    ApiKey: stored[Setting.ApiKey],
+                    ApiKey: apiKey,
                 }
             });
     
@@ -80,30 +93,30 @@ window.addEventListener("load", () => {
                 input.classList.add('is-invalid');
             }
 
-            showErrorStatus(status, "Error");
+            showErrorStatus(status, 'Error');
         }
 
-        form.addEventListener("submit", async (event: Event) => {
+        form.addEventListener('submit', async (event: Event) => {
             event.preventDefault();
         
             for (const k in inputs) {
                 inputs[k].classList.remove('is-invalid');
             }
 
-            showInfoStatus(status, "Saving...");
+            showInfoStatus(status, 'Saving...');
         
             try {
-                const createUrl = stored[Setting.ApiUrl] + '/create';
+                const createUrl = apiUrl + '/create';
 
                 const response = await post(createUrl, {
-                    method: "POST",
+                    method: 'POST',
                     body: new FormData(form),
                     headers: {
-                        ApiKey: stored[Setting.ApiKey],
+                        ApiKey: apiKey,
                     }
                 });
         
-                showSuccessStatus(status, "Saved", 1000);
+                showSuccessStatus(status, 'Saved', 1000);
 
                 // window.setTimeout(window.close, 1000);
             } catch (e) {
@@ -115,7 +128,7 @@ window.addEventListener("load", () => {
                     input.classList.add('is-invalid');
                 }
 
-                showErrorStatus(status, "Error");
+                showErrorStatus(status, 'Error');
             }
         });
     });
