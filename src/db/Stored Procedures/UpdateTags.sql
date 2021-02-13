@@ -89,4 +89,25 @@ BEGIN
         @LinkID
     FROM
         @TagsToLink
+
+    -- Update the Tags column in Links for efficient display
+    DECLARE @DisplayTags TABLE (dt NVARCHAR(64))
+
+    INSERT INTO
+        @DisplayTags
+    SELECT
+        t.[Label]
+    FROM
+        Tags t
+    INNER JOIN
+        Tags_Links tl ON tl.TagID = t.ID
+    WHERE
+        tl.LinkID = @LinkID
+
+	UPDATE
+		Links
+	SET
+		Tags = (SELECT STRING_AGG(dt, '|') FROM @DisplayTags)
+	WHERE
+		ID = @LinkID
 END

@@ -43,6 +43,28 @@ BEGIN
                 Tags t
             INNER JOIN
                 @TagIdsToMerge m ON m.ID = t.ID
+
+            -- Update the Tags column in Links for efficient display
+            DECLARE @DisplayTags TABLE (id UNIQUEIDENTIFIER, dt NVARCHAR(64))
+
+            INSERT INTO
+                @DisplayTags
+            SELECT
+                tl.LinkID,
+                t.[Label]
+            FROM
+                Tags t
+            INNER JOIN
+                Tags_Links tl ON tl.TagID = t.ID
+            WHERE
+                t.UserID = @UserID
+
+            UPDATE
+                l
+            SET
+                Tags = (SELECT STRING_AGG(t.dt, '|') FROM @DisplayTags t WHERE t.id = l.ID)
+            FROM
+                Links l
         COMMIT TRAN
     END TRY
     BEGIN CATCH

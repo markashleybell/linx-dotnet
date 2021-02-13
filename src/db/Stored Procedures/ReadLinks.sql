@@ -18,5 +18,5 @@ BEGIN
     WHERE
         UserID = @UserID
     ORDER BY
-        Title
+        Created DESC
 END
