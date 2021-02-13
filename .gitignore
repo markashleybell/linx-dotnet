@@ -361,6 +361,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# Database releases
+!src/db/Releases/
+
 # Webpack output
 src/app/wwwroot/js/dist/
 src/extension/dist/
