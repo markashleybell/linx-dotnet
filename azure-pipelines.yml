@@ -14,7 +14,7 @@ steps:
 - task: MSBuild@1
   displayName: 'Database Build'
   inputs:
-    solution: '$(Build.SourcesDirectory)/src/db/db.sqlproj'
+    solution: '**/db.sqlproj'
     configuration: '$(buildConfiguration)'
     clean: true
     msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
