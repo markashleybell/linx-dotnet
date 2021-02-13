@@ -1,15 +1,9 @@
 ﻿@model IndexViewModel
 
-@using System.Security.Claims
-
-@*@User.FindFirst(ClaimTypes.UserData)*@
-
-<div>
-    @foreach (var link in Model.Links)
-    {
-    <p>@link.Title (@link.Url) - @link.Abstract | @string.Join(",", link.Tags.Select(t => t.Label)) <br /><a asp-controller="Links" asp-action="Update" asp-route-id="@link.ID">Edit</a></p>
-    }
-</div>
+@foreach (var link in Model.Links)
+{
+    <partial name="_Link" model="link" />
+}
 
 @section scripts {
     <script src="~/js/dist/index.js" asp-append-version="true"></script>

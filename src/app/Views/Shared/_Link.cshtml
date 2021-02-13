@@ -1,0 +1,9 @@
+﻿@model Link
+
+<div class="link">
+    <h2><a href="@Model.Url">@Model.Title</a> <a class="link-edit" asp-controller="Links" asp-action="Update" asp-route-id="@Model.ID">Edit</a></h2>
+
+    <p>@Model.Abstract</p>
+
+    <tag-links tags="Model.Tags" />
+</div>

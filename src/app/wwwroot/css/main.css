@@ -3,6 +3,16 @@ body {
     background-color: #e0e0e0;
 }
 
+.link h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.link-edit {
+    font-size: 0.8rem;
+}
+
 .tag-cloud {
     padding: 30px 0;
     text-align: center;
