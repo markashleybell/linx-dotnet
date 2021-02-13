@@ -84,6 +84,8 @@
   <ItemGroup>
     <None Include="Scripts\seed.sql" />
     <None Include="db.publish.xml" />
-    <None Include="Releases\001 Initial Release.sql" />
+    <None Include="Releases\001 Initial Release.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
