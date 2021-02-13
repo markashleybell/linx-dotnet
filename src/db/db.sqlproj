@@ -62,6 +62,7 @@
     <Folder Include="Scripts" />
     <Folder Include="Stored Procedures" />
     <Folder Include="Types" />
+    <Folder Include="Releases" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Procedures\MergeTags.sql" />
@@ -83,5 +84,6 @@
   <ItemGroup>
     <None Include="Scripts\seed.sql" />
     <None Include="db.publish.xml" />
+    <None Include="Releases\001 Initial Release.sql" />
   </ItemGroup>
 </Project>
