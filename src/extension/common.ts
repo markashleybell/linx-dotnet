@@ -24,7 +24,7 @@ export function hideStatus(element: HTMLElement) {
     element.classList.add("status-hidden");
 }
 
-function showStatus(element: HTMLElement, message: string, statusClass: string, autoHideDelay?: number) {
+function showStatus(element: HTMLElement, message: string, statusClass: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
     element.classList.remove(
         "status-hidden",
         "bg-secondary",
@@ -35,19 +35,24 @@ function showStatus(element: HTMLElement, message: string, statusClass: string, 
     element.classList.add(statusClass);
     element.innerText = message;
 
-    if (autoHideDelay) {
-        window.setTimeout(() => hideStatus(element), autoHideDelay);
+    if (autoHideAfterMs) {
+        window.setTimeout(() => {
+            hideStatus(element);
+            if (onAfterHide) {
+                onAfterHide();
+            }
+        }, autoHideAfterMs);
     }
 }
 
-export function showInfoStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
-    showStatus(element, message, "bg-secondary", autoHideDelay);
+export function showInfoStatus(element: HTMLElement, message: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
+    showStatus(element, message, "bg-secondary", autoHideAfterMs, onAfterHide);
 }
 
-export function showSuccessStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
-    showStatus(element, message, "bg-success", autoHideDelay);
+export function showSuccessStatus(element: HTMLElement, message: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
+    showStatus(element, message, "bg-success", autoHideAfterMs, onAfterHide);
 }
 
-export function showErrorStatus(element: HTMLElement, message: string, autoHideDelay?: number) {
-    showStatus(element, message, "bg-danger", autoHideDelay);
+export function showErrorStatus(element: HTMLElement, message: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
+    showStatus(element, message, "bg-danger", autoHideAfterMs, onAfterHide);
 }

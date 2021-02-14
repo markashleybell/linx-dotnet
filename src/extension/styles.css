@@ -80,6 +80,11 @@
     color: #fff;
 }
 
+body.popup {
+    min-width: 520px;
+    overflow-x: hidden;
+}
+
 .badge {
     margin-left: 1rem;
 }

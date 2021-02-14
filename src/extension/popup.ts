@@ -116,9 +116,7 @@ window.addEventListener('load', () => {
                     }
                 });
         
-                showSuccessStatus(status, 'Saved', 1000);
-
-                // window.setTimeout(window.close, 1000);
+                showSuccessStatus(status, 'Saved', 1000, window.close);
             } catch (e) {
                 const errors = (e as ApiErrorResponse).errors;
 
