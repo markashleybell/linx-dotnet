@@ -1,14 +1,25 @@
 {
     "manifest_version": 3,
     "name": "Linx",
-    "description": "Save a bookmark to Linx.",
     "version": "0.9",
+    "description": "Save a bookmark to Linx.",
+    "icons": {
+        "16": "favicon-16x16.png",
+        "32": "favicon-32x32.png",
+        "192": "icon-192x192.png",
+        "512": "icon-512x512.png"
+    },
     "options_ui": {
         "page": "settings.html",
         "open_in_tab": false
     },
     "action": {
-        "default_icon": "icon.png",
+        "default_icon": {
+            "16": "favicon-16x16.png",
+            "32": "favicon-32x32.png",
+            "192": "icon-192x192.png",
+            "512": "icon-512x512.png"
+        },
         "default_popup": "popup.html"
     },
     "permissions": [

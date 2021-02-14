@@ -17,7 +17,11 @@ module.exports = {
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'icon.png', to: '.' },
+                { from: 'favicon-16x16.png', to: '.' },
+                { from: 'favicon-32x32.png', to: '.' },
+                { from: 'icon-192x192.png', to: '.' },
+                { from: 'icon-512x512.png', to: '.' },
+
                 { from: 'manifest.json', to: '.' },
                 { from: 'settings.html', to: '.' },
                 { from: 'popup.html', to: '.' },
