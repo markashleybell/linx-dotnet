@@ -1,3 +1,4 @@
+import { tagItemTemplate } from './common';
 import { TagInput } from 'mab-bootstrap-taginput';
 
 declare const _ALL_TAGS: string[];
@@ -10,5 +11,5 @@ new TagInput<string>({
     getId: item => item,
     getLabel: item => item,
     newItemFactory: label => Promise.resolve(label),
-    itemTemplate: '<div class="{{globalCssClassPrefix}}-tag" data-id="{{id}}" data-label="{{label}}">{{label}} <i class="{{globalCssClassPrefix}}-removetag bi bi-x"></i></div>'
+    itemTemplate: tagItemTemplate
 });

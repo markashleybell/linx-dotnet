@@ -1,4 +1,5 @@
 .link h2 {
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -6,4 +7,12 @@
 
 .link-edit {
     font-size: 0.8rem;
+}
+
+.link-abstract {
+    margin-bottom: 0.5rem;
+}
+
+.tag-links {
+    margin-bottom: 2rem;
 }

@@ -5,7 +5,7 @@
 
 .badge-tag {
     margin: 3px 5px;
-
+    padding: .35em .40em .35em .65em;
     .badge {
         margin-left: 10px;
     }
@@ -29,6 +29,16 @@
 
 .badge-tag-xl {
     font-size: 5em;
+}
+
+.tag-links, .tag-cloud {
+    a:link, a:visited, a:hover, a:active {
+        color: #ffffff;
+    }
+
+    a:hover {
+        background-color: darken(#0d6efd, 20%) !important;
+    }
 }
 
 .tag-links .badge {

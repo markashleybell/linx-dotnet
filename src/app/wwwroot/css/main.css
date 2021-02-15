@@ -3,7 +3,12 @@ body {
     background-color: #e0e0e0;
 }
 
+a {
+    text-decoration: none;
+}
+
 .link h2 {
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -13,6 +18,14 @@ body {
     font-size: 0.8rem;
 }
 
+.link-abstract {
+    margin-bottom: 0.5rem;
+}
+
+.tag-links {
+    margin-bottom: 2rem;
+}
+
 .tag-cloud {
     padding: 30px 0;
     text-align: center;
@@ -20,6 +33,7 @@ body {
 
 .badge-tag {
     margin: 3px 5px;
+    padding: .35em .40em .35em .65em;
 }
 
 .badge-tag .badge {
@@ -44,6 +58,14 @@ body {
 
 .badge-tag-xl {
     font-size: 5em;
+}
+
+.tag-links a:link, .tag-links a:visited, .tag-links a:hover, .tag-links a:active, .tag-cloud a:link, .tag-cloud a:visited, .tag-cloud a:hover, .tag-cloud a:active {
+    color: #ffffff;
+}
+
+.tag-links a:hover, .tag-cloud a:hover {
+    background-color: #0143a3 !important;
 }
 
 .tag-links .badge {
