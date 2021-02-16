@@ -6,16 +6,26 @@ namespace Linx.Domain
     public class Tag
     {
         public Tag(string label)
-            : this(default, label)
+            : this(
+                default,
+                label)
         {
         }
 
-        public Tag(Guid? id, string label)
-            : this(id, label, default)
+        public Tag(
+            Guid? id,
+            string label)
+            : this(
+                id,
+                label,
+                default)
         {
         }
 
-        public Tag(Guid? id, string label, int? useCount)
+        public Tag(
+            Guid? id,
+            string label,
+            int? useCount)
         {
             if (label is null)
             {

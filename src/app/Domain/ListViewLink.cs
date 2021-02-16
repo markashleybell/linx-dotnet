@@ -1,33 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using static Linx.Functions.Functions;
 
 namespace Linx.Domain
 {
-    public class Link
+    public class ListViewLink
     {
-        public Link(
+        public ListViewLink(
             Guid id,
             string title,
             string url,
             string @abstract,
-            string tags)
-            : this(
-                id,
-                title,
-                url,
-                @abstract,
-                TagList(tags))
-        {
-        }
-
-        public Link(
-            Guid id,
-            string title,
-            string url,
-            string @abstract,
-            IEnumerable<Tag> tags)
+            string tags,
+            DateTime created,
+            DateTime updated)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -43,7 +29,9 @@ namespace Linx.Domain
             Title = title;
             Url = url;
             Abstract = @abstract;
-            Tags = tags ?? Enumerable.Empty<Tag>();
+            Tags = TagList(tags);
+            Created = created;
+            Updated = updated;
         }
 
         public Guid ID { get; }
@@ -55,5 +43,9 @@ namespace Linx.Domain
         public string Abstract { get; }
 
         public IEnumerable<Tag> Tags { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
     }
 }

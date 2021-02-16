@@ -43,13 +43,28 @@ namespace Linx.Data
                 );
             });
 
-        public async Task<IEnumerable<Link>> ReadAllLinksAsync(Guid userID) =>
-            await WithConnectionAsync(conn => {
-                return conn.QuerySpAsync<Link>(
+        public async Task<IEnumerable<ListViewLink>> ReadLinksAsync(
+            Guid userID,
+            int page,
+            int pageSize,
+            SortColumn sortBy,
+            SortDirection sortDirection)
+        {
+            var param = new {
+                userID,
+                page,
+                RowsPerPage = pageSize,
+                OrderByColumn = sortBy.ToString(),
+                OrderDirection = sortDirection == SortDirection.Ascending ? "ASC" : "DESC"
+            };
+
+            return await WithConnectionAsync(conn => {
+                return conn.QuerySpAsync<ListViewLink>(
                     sql: "ReadLinks",
-                    param: new { userID }
+                    param: param
                 );
             });
+        }
 
         public async Task<Link> UpdateLinkAsync(Guid userID, Link link) =>
             await WithConnectionAsync(async conn => {

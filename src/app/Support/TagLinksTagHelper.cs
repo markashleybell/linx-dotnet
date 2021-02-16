@@ -31,7 +31,7 @@ namespace Linx.Support
             output.TagName = "p";
             output.Attributes.Add("class", ContainerClasses);
 
-            foreach (var link in Tags.Select(t => TagSearchActionLink(t.Label)))
+            foreach (var link in Tags.OrderBy(t => t.Label).Select(t => TagSearchActionLink(t.Label)))
             {
                 output.Content.AppendHtml(link);
             }

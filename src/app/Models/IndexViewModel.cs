@@ -6,6 +6,6 @@ namespace Linx.Models
 {
     public class IndexViewModel
     {
-        public IEnumerable<Link> Links { get; set; }
+        public IEnumerable<ListViewLink> Links { get; set; }
     }
 }
