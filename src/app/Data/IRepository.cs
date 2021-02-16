@@ -11,7 +11,7 @@ namespace Linx.Data
 
         Task<Link> ReadLinkAsync(Guid userID, Guid id);
 
-        Task<IEnumerable<ListViewLink>> ReadLinksAsync(
+        Task<(int total, int pageCount, IEnumerable<ListViewLink> page)> ReadLinksAsync(
             Guid userID,
             int page,
             int pageSize,

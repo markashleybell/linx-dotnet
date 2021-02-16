@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Linx.Domain;
@@ -43,7 +45,7 @@ namespace Linx.Data
                 );
             });
 
-        public async Task<IEnumerable<ListViewLink>> ReadLinksAsync(
+        public async Task<(int total, int pageCount, IEnumerable<ListViewLink> page)> ReadLinksAsync(
             Guid userID,
             int page,
             int pageSize,
@@ -58,12 +60,20 @@ namespace Linx.Data
                 OrderDirection = sortDirection == SortDirection.Ascending ? "ASC" : "DESC"
             };
 
-            return await WithConnectionAsync(conn => {
-                return conn.QuerySpAsync<ListViewLink>(
+            using (var connection = new SqlConnection(_cfg.ConnectionString))
+            {
+                var reader = await connection.QueryMultipleAsync(
                     sql: "ReadLinks",
-                    param: param
+                    param: param,
+                    commandType: CommandType.StoredProcedure
                 );
-            });
+
+                var total = await reader.ReadSingleOrDefaultAsync<int?>();
+                var pageCount = await reader.ReadSingleOrDefaultAsync<int?>();
+                var links = await reader.ReadAsync<ListViewLink>();
+
+                return (total.GetValueOrDefault(0), pageCount.GetValueOrDefault(0), links ?? Enumerable.Empty<ListViewLink>());
+            }
         }
 
         public async Task<Link> UpdateLinkAsync(Guid userID, Link link) =>
