@@ -80,6 +80,9 @@
     <Build Include="Stored Procedures\UpdateLink.sql" />
     <Build Include="Tables\DeletedLinks.sql" />
     <None Include="Scripts\inspect.sql" />
+    <None Include="Releases\002 Result Paging.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\seed.sql" />
