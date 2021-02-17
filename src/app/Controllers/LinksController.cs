@@ -22,15 +22,21 @@ namespace Linx.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(
+            int page = 1,
+            int pageSize = 10,
+            SortColumn sort = SortColumn.Created,
+            SortDirection sortDirection = SortDirection.Descending)
         {
-            var (total, pageCount, links) = await Repository.ReadLinksAsync(UserID, page, pageSize, SortColumn.Created, SortDirection.Descending);
+            var (total, pageCount, links) = await Repository.ReadLinksAsync(UserID, page, pageSize, sort, sortDirection);
 
             var model = new IndexViewModel {
                 Total = total,
                 Pages = pageCount,
                 PageSize = pageSize,
                 Page = page,
+                Sort = sort,
+                SortDirection = sortDirection,
                 Links = links
             };
 

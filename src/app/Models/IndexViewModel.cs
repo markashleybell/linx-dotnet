@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Linx.Data;
 using Linx.Domain;
+using Microsoft.AspNetCore.Html;
 
 namespace Linx.Models
 {
@@ -14,6 +17,33 @@ namespace Linx.Models
 
         public int Page { get; set; }
 
+        public SortColumn Sort { get; set; }
+
+        public SortDirection SortDirection { get; set; }
+
         public IEnumerable<ListViewLink> Links { get; set; }
+
+        public HtmlString PageLinkWith(
+            int? page = null,
+            int? pageSize = null,
+            SortColumn? sort = null,
+            SortDirection? sortDirection = null)
+        {
+            var parameters = new Dictionary<string, object> {
+                { "page", page ?? Page },
+                { "pageSize", pageSize ?? PageSize },
+                { "sort", sort ?? Sort },
+                { "sortDirection", sortDirection ?? SortDirection }
+            };
+
+            var queryString = string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));
+
+            return new HtmlString("?" + queryString);
+        }
+
+        public string SortLinkClassesFor(SortColumn sort, SortDirection sortDirection) =>
+            sort == Sort && sortDirection == SortDirection
+                ? "btn btn-primary active"
+                : "btn btn-outline-primary";
     }
 }

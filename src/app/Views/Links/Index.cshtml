@@ -1,31 +1,44 @@
 ﻿@model IndexViewModel
 
-<p>@Model.Total links</p>
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @if (Model.Page > 1)
-        {
-            <li class="page-item"><a class="page-link" href="/?page=@(Model.Page - 1)&pageSize=@(Model.PageSize)">Previous</a></li>
-        }
-        else
-        {
-            <li class="page-item disabled"><a class="page-link" href="/?page=1&pageSize=@(Model.PageSize)">Previous</a></li>
-        }
-        @foreach (var i in Enumerable.Range(1, Model.Pages))
-        {
-            <li class="page-item @(i == Model.Page ? "active" : string.Empty)"><a class="page-link" href="/?page=@(i)&pageSize=@(Model.PageSize)">@(i)</a></li>
-        }
-        @if (Model.Page < Model.Pages)
-        {
-            <li class="page-item"><a class="page-link" href="/?page=@(Model.Page + 1)&pageSize=@(Model.PageSize)">Next</a></li>
-        }
-        else
-        {
-            <li class="page-item disabled"><a class="page-link" href="/?page=@(Model.Pages)&pageSize=@(Model.PageSize)">Next</a></li>
-        }
-    </ul>
-</nav>
+<div class="row mb-4">
+    <div class="col d-flex align-items-center">
+        <div>
+            <div class="btn-group btn-group-sm">
+                @if (Model.Page > 1)
+                {
+                    <a class="btn btn-outline-primary" href="/@Model.PageLinkWith(page: Model.Page - 1)">Previous</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary disabled" href="/?page=1&pageSize=@(Model.PageSize)">Previous</a>
+                }
+                @foreach (var i in Enumerable.Range(1, Model.Pages))
+                {
+                    <a class="btn @(i == Model.Page ? "btn-primary active" : "btn-outline-primary")" href="/@Model.PageLinkWith(page: i)">@(i)</a>
+                }
+                @if (Model.Page < Model.Pages)
+                {
+                    <a class="btn btn-outline-primary" href="@Model.PageLinkWith(page: Model.Page + 1)">Next</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary disabled" href="/?page=@(Model.Pages)&pageSize=@(Model.PageSize)">Next</a>
+                }
+            </div>
+        </div>
+        <div class="ps-3"><strong>@Model.Total</strong> links</div>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <div>
+            <div class="btn-group btn-group-sm">
+                <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Created, sortDirection: SortDirection.Descending)" class="@Model.SortLinkClassesFor(SortColumn.Created, SortDirection.Descending)">Latest</a>
+                <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Created, sortDirection: SortDirection.Ascending)" class="@Model.SortLinkClassesFor(SortColumn.Created, SortDirection.Ascending)">Oldest</a>
+                <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Title, sortDirection: SortDirection.Ascending)" class="@Model.SortLinkClassesFor(SortColumn.Title, SortDirection.Ascending)">A-Z</a>
+                <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Title, sortDirection: SortDirection.Descending)" class="@Model.SortLinkClassesFor(SortColumn.Title, SortDirection.Descending)">Z-A</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 @foreach (var link in Model.Links)
 {

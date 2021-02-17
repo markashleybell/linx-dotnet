@@ -8,3 +8,21 @@ body {
 a {
     text-decoration: none;
 }
+
+// Stop annoying double border in button group
+.btn-group .btn-outline-primary:not(:last-child) {
+    border-right: none;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-item .page-link {
+    border: #ff0000;
+}
+
+.page-item.disabled .page-link {
+    border: #ff0000;
+    background: none;
+}
