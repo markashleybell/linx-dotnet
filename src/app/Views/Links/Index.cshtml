@@ -31,6 +31,13 @@
     <div class="col d-flex justify-content-end">
         <div>
             <div class="btn-group btn-group-sm">
+                <a href="@Model.PageLinkWith(page: 1, pageSize: 10)" class="@Model.PageSizeLinkClassesFor(10)">10</a>
+                <a href="@Model.PageLinkWith(page: 1, pageSize: 50)" class="@Model.PageSizeLinkClassesFor(50)">50</a>
+                <a href="@Model.PageLinkWith(page: 1, pageSize: 100)" class="@Model.PageSizeLinkClassesFor(100)">100</a>
+            </div>
+        </div>
+        <div class="ps-3">
+            <div class="btn-group btn-group-sm">
                 <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Created, sortDirection: SortDirection.Descending)" class="@Model.SortLinkClassesFor(SortColumn.Created, SortDirection.Descending)">Latest</a>
                 <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Created, sortDirection: SortDirection.Ascending)" class="@Model.SortLinkClassesFor(SortColumn.Created, SortDirection.Ascending)">Oldest</a>
                 <a href="@Model.PageLinkWith(page: 1, sort: SortColumn.Title, sortDirection: SortDirection.Ascending)" class="@Model.SortLinkClassesFor(SortColumn.Title, SortDirection.Ascending)">A-Z</a>

@@ -41,6 +41,11 @@ namespace Linx.Models
             return new HtmlString("?" + queryString);
         }
 
+        public string PageSizeLinkClassesFor(int pageSize) =>
+            pageSize == PageSize
+                ? "btn btn-primary active"
+                : "btn btn-outline-primary";
+
         public string SortLinkClassesFor(SortColumn sort, SortDirection sortDirection) =>
             sort == Sort && sortDirection == SortDirection
                 ? "btn btn-primary active"
