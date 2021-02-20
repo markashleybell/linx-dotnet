@@ -4,29 +4,30 @@
     <div class="col d-flex align-items-center">
         <div>
             <div class="btn-group btn-group-sm">
-                @if (Model.Page > 1)
+                @if (Model.Pagination.Page > 1)
                 {
-                    <a class="btn btn-outline-primary" href="/@Model.PageLinkWith(page: Model.Page - 1)">Previous</a>
+                    <a class="btn btn-outline-primary" href="/@Model.PageLinkWith(page: Model.Pagination.Page - 1)">Previous</a>
                 }
                 else
                 {
-                    <a class="btn btn-outline-primary disabled" href="/?page=1&pageSize=@(Model.PageSize)">Previous</a>
+                    <a class="btn btn-outline-primary disabled" href="/?page=1&pageSize=@(Model.Pagination.PageSize)">Previous</a>
                 }
-                @foreach (var i in Enumerable.Range(1, Model.Pages))
+                @foreach (var i in Enumerable.Range(1, Model.Pagination.Pages))
                 {
-                    <a class="btn @(i == Model.Page ? "btn-primary active" : "btn-outline-primary")" href="/@Model.PageLinkWith(page: i)">@(i)</a>
+                    <a class="btn @(i == Model.Pagination.Page ? "btn-primary active" : "btn-outline-primary")" href="/@Model.PageLinkWith(page: i)">@(i)</a>
                 }
-                @if (Model.Page < Model.Pages)
+                @if (Model.Pagination.Page < Model.Pagination.Pages)
                 {
-                    <a class="btn btn-outline-primary" href="@Model.PageLinkWith(page: Model.Page + 1)">Next</a>
+                    <a class="btn btn-outline-primary" href="@Model.PageLinkWith(page: Model.Pagination.Page + 1)">Next</a>
                 }
                 else
                 {
-                    <a class="btn btn-outline-primary disabled" href="/?page=@(Model.Pages)&pageSize=@(Model.PageSize)">Next</a>
+                    <a class="btn btn-outline-primary disabled" href="/?page=@(Model.Pagination.Pages)&pageSize=@(Model.Pagination.PageSize)">Next</a>
                 }
             </div>
         </div>
-        <div class="ps-3"><strong>@Model.Total</strong> links</div>
+        <div class="ps-3"><strong>@Model.Pagination.Total</strong> links</div>
+        <div class="ps-3"><tag-badges tags="Model.Pagination.Tags" read-only="true" container-classes="query-tags" /></div>
     </div>
     <div class="col d-flex justify-content-end">
         <div>

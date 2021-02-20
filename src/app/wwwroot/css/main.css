@@ -85,7 +85,7 @@ a {
     background-color: #0143a3 !important;
 }
 
-.tag-links .badge {
+.tag-links .badge, .query-tags .badge {
     margin-right: 6px;
 }
 

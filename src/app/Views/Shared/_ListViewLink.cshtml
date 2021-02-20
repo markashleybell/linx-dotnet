@@ -1,9 +1,9 @@
-﻿@model ListViewLink
+﻿@model ListViewLinkViewModel
 
 <div class="link">
-    <h2><a href="@Model.Url">@Model.Title</a> <a class="link-edit" asp-controller="Links" asp-action="Update" asp-route-id="@Model.ID">Edit</a></h2>
+    <h2><a href="@Model.Link.Url">@Model.Link.Title</a> <a class="link-edit" asp-controller="Links" asp-action="Update" asp-route-id="@Model.Link.ID">Edit</a></h2>
 
-    <p class="link-abstract">@Model.Abstract</p>
+    <p class="link-abstract">@Model.Link.Abstract</p>
 
-    <tag-links tags="Model.Tags" />
+    <tag-badges tags="Model.Link.Tags" pagination="Model.Pagination" container-classes="tag-links" />
 </div>

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Models;
@@ -23,7 +24,7 @@ namespace Linx.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(
             int page = 1,
-            int pageSize = 2,
+            int pageSize = 10,
             SortColumn sort = SortColumn.Created,
             SortDirection sortDirection = SortDirection.Descending,
             string query = null)
@@ -32,15 +33,19 @@ namespace Linx.Controllers
 
             var (total, pageCount, links) = await Repository.ReadLinksAsync(UserID, page, pageSize, sort, sortDirection, tags);
 
-            var model = new IndexViewModel {
+            var pagination = new PaginationDetails {
                 Total = total,
                 Pages = pageCount,
                 PageSize = pageSize,
                 Page = page,
                 Sort = sort,
                 SortDirection = sortDirection,
-                Query = query,
-                Links = links
+                Tags = tags
+            };
+
+            var model = new IndexViewModel {
+                Pagination = pagination,
+                Links = links.Select(l => new ListViewLinkViewModel { Link = l, Pagination = pagination })
             };
 
             return View(model);
