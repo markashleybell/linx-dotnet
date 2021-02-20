@@ -83,6 +83,9 @@
     <None Include="Releases\002 Result Paging.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Releases\003 Tag Queries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\seed.sql" />
