@@ -16,7 +16,8 @@ namespace Linx.Data
             int page,
             int pageSize,
             SortColumn sortBy,
-            SortDirection sortDirection);
+            SortDirection sortDirection,
+            IEnumerable<Tag> tags = null);
 
         Task<Link> UpdateLinkAsync(Guid userID, Link link);
 

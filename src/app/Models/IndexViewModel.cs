@@ -21,19 +21,23 @@ namespace Linx.Models
 
         public SortDirection SortDirection { get; set; }
 
+        public string Query { get; set; }
+
         public IEnumerable<ListViewLink> Links { get; set; }
 
         public HtmlString PageLinkWith(
             int? page = null,
             int? pageSize = null,
             SortColumn? sort = null,
-            SortDirection? sortDirection = null)
+            SortDirection? sortDirection = null,
+            string query = null)
         {
             var parameters = new Dictionary<string, object> {
                 { "page", page ?? Page },
                 { "pageSize", pageSize ?? PageSize },
                 { "sort", sort ?? Sort },
-                { "sortDirection", sortDirection ?? SortDirection }
+                { "sortDirection", sortDirection ?? SortDirection },
+                { "query", query ?? Query }
             };
 
             var queryString = string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));

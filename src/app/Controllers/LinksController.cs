@@ -1,12 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Linx.Data;
-using Linx.Functions;
 using Linx.Models;
 using Linx.Support;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static Linx.Functions.Functions;
 
 namespace Linx.Controllers
 {
@@ -24,11 +23,14 @@ namespace Linx.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(
             int page = 1,
-            int pageSize = 10,
+            int pageSize = 2,
             SortColumn sort = SortColumn.Created,
-            SortDirection sortDirection = SortDirection.Descending)
+            SortDirection sortDirection = SortDirection.Descending,
+            string query = null)
         {
-            var (total, pageCount, links) = await Repository.ReadLinksAsync(UserID, page, pageSize, sort, sortDirection);
+            var (parsed, terms, tags) = ParseSearchQuery(query);
+
+            var (total, pageCount, links) = await Repository.ReadLinksAsync(UserID, page, pageSize, sort, sortDirection, tags);
 
             var model = new IndexViewModel {
                 Total = total,
@@ -37,6 +39,7 @@ namespace Linx.Controllers
                 Page = page,
                 Sort = sort,
                 SortDirection = sortDirection,
+                Query = query,
                 Links = links
             };
 

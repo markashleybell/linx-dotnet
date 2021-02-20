@@ -44,7 +44,7 @@ namespace Linx.Support
                 viewContext: ViewContext,
                 linkText: label,
                 actionName: "Index",
-                controllerName: "Search",
+                controllerName: "Links",
                 protocol: null,
                 hostname: null,
                 fragment: null,

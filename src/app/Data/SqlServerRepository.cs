@@ -50,14 +50,18 @@ namespace Linx.Data
             int page,
             int pageSize,
             SortColumn sortBy,
-            SortDirection sortDirection)
+            SortDirection sortDirection,
+            IEnumerable<Tag> tags = null)
         {
+            var tagList = (tags ?? Enumerable.Empty<Tag>()).AsDataRecords().AsTableValuedParameter("dbo.TagList");
+
             var param = new {
                 userID,
                 page,
                 RowsPerPage = pageSize,
                 OrderByColumn = sortBy.ToString(),
-                OrderDirection = sortDirection == SortDirection.Ascending ? "ASC" : "DESC"
+                OrderDirection = sortDirection == SortDirection.Ascending ? "ASC" : "DESC",
+                Tags = tagList
             };
 
             using (var connection = new SqlConnection(_cfg.ConnectionString))
