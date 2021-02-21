@@ -8,6 +8,7 @@ module.exports = {
     },
     entry: {
         'index': './wwwroot/js/index.ts',
+        'tagcloud': './wwwroot/js/tagcloud.ts',
         'taginput': './wwwroot/js/taginput.ts',
         'tagmanager': './wwwroot/js/tagmanager.ts'
     },

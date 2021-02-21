@@ -6,9 +6,13 @@
 
             @foreach (var tag in Model.Tags)
             {
-                <a asp-action="Index" asp-controller="Links" asp-route-query="[@tag.Label]" class="badge bg-primary badge-tag @Model.GetClass(tag)">@tag.Label <span class="badge bg-dark">@tag.UseCount</span></a>
+                <a asp-action="Index" asp-controller="Links" asp-route-query="[@tag.Label]" class="badge bg-primary" data-count="@tag.UseCount"><span>@tag.Label</span> <span class="badge bg-dark">@tag.UseCount</span></a>
             }
 
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script src="~/js/dist/tagcloud.js" asp-append-version="true"></script>
+}

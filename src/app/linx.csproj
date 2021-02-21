@@ -19,10 +19,12 @@
 
     <ItemGroup>
       <TypeScriptCompile Remove="wwwroot\js\common.ts" />
+      <TypeScriptCompile Remove="wwwroot\js\tagcloud.ts" />
     </ItemGroup>
 
     <ItemGroup>
         <None Include="wwwroot\js\common.ts" />
+        <None Include="wwwroot\js\tagcloud.ts" />
         <None Include="wwwroot\js\index.ts" />
         <None Include="wwwroot\js\taginput.ts" />
         <None Include="wwwroot\js\tagmanager.ts" />

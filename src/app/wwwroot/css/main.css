@@ -48,54 +48,46 @@ a {
     margin-bottom: 2rem;
 }
 
+.tag-links .badge, .query-tags .badge {
+    margin-right: 6px;
+}
+
+.tag-links a:link, .tag-links a:visited, .tag-links a:hover, .tag-links a:active, .query-tags a:link, .query-tags a:visited, .query-tags a:hover, .query-tags a:active {
+    color: #ffffff;
+}
+
+.tag-links a.bg-primary:hover, .query-tags a.bg-primary:hover {
+    background-color: #0143a3 !important;
+}
+
+.tag-links a.bg-secondary:hover, .query-tags a.bg-secondary:hover {
+    background-color: #3d4246 !important;
+}
+
 .tag-cloud {
     padding: 30px 0;
     text-align: center;
 }
 
-.badge-tag {
-    margin: 3px 5px;
-    padding: .35em .40em .35em .65em;
-}
-
-.badge-tag .badge {
-    margin-left: 10px;
-}
-
-.badge-tag-xs {
-    font-size: 0.9em;
-}
-
-.badge-tag-sm {
-    font-size: 2em;
-}
-
-.badge-tag-md {
-    font-size: 3em;
-}
-
-.badge-tag-lg {
-    font-size: 4em;
-}
-
-.badge-tag-xl {
-    font-size: 5em;
-}
-
-.tag-links .badge, .tag-cloud .badge, .query-tags .badge {
-    margin-right: 6px;
-}
-
-.tag-links a:link, .tag-links a:visited, .tag-links a:hover, .tag-links a:active, .tag-cloud a:link, .tag-cloud a:visited, .tag-cloud a:hover, .tag-cloud a:active, .query-tags a:link, .query-tags a:visited, .query-tags a:hover, .query-tags a:active {
+.tag-cloud a:link, .tag-cloud a:visited, .tag-cloud a:hover, .tag-cloud a:active {
     color: #ffffff;
 }
 
-.tag-links a.bg-primary:hover, .tag-cloud a.bg-primary:hover, .query-tags a.bg-primary:hover {
+.tag-cloud a.bg-primary:hover {
     background-color: #0143a3 !important;
 }
 
-.tag-links a.bg-secondary:hover, .tag-cloud a.bg-secondary:hover, .query-tags a.bg-secondary:hover {
+.tag-cloud a.bg-secondary:hover {
     background-color: #3d4246 !important;
+}
+
+.tag-cloud > .badge {
+    font-size: 1rem;
+    margin: 5px 5px;
+}
+
+.tag-cloud > .badge > .badge {
+    margin-left: 10px;
 }
 
 .mab-bootstrap-taginput {
