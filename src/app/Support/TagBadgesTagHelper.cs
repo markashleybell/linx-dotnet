@@ -22,15 +22,14 @@ namespace Linx.Support
 
         public bool ReadOnly { get; set; }
 
+        public bool Remove { get; set; }
+
         public string ContainerTag { get; set; }
             = "div";
 
         public string ContainerClasses { get; set; }
 
         public string BadgeClasses { get; set; }
-            = "badge bg-primary";
-
-        public string BadgeClassesReadOnly { get; set; }
             = "badge bg-secondary";
 
         [HtmlAttributeNotBound]
@@ -46,23 +45,46 @@ namespace Linx.Support
                 output.Attributes.Add("class", ContainerClasses);
             }
 
-            foreach (var link in Tags.OrderBy(t => t.Label).Select(t => ReadOnly ? TagBadge(t) : TagSearchActionLink(t)))
+            Func<Tag, TagBuilder> html =
+                ReadOnly ? TagBadge : Remove ? RemoveTagLinkBadge : AddTagLinkBadge;
+
+            foreach (var t in Tags.OrderBy(t => t.Label).Select(html))
             {
-                output.Content.AppendHtml(link);
+                output.Content.AppendHtml(t);
             }
 
             output.TagMode = TagMode.StartTagAndEndTag;
         }
 
-        private TagBuilder TagSearchActionLink(Tag tag)
+        private TagBuilder AddTagLinkBadge(Tag tag)
         {
-            // Append the tag for this link to the tags already being queried for
             var currentTags = Pagination?.Tags ?? Enumerable.Empty<Tag>();
 
-            // Don't re-add this tag if it's already in the query
+            // Append the tag for this link to the tags already in
+            // the query, but don't re-add it if it's already there
             var queryTags = !currentTags.Any(t => t.Label.Equals(tag.Label, StringComparison.OrdinalIgnoreCase))
                 ? currentTags.Append(tag)
                 : currentTags;
+
+            return _htmlGenerator.GenerateActionLink(
+                viewContext: ViewContext,
+                linkText: tag.Label,
+                actionName: "Index",
+                controllerName: "Links",
+                protocol: null,
+                hostname: null,
+                fragment: null,
+                routeValues: new { query = string.Join(" ", queryTags.Select(t => $"[{t.Label}]")) },
+                htmlAttributes: new { @class = BadgeClasses }
+            );
+        }
+
+        private TagBuilder RemoveTagLinkBadge(Tag tag)
+        {
+            var currentTags = Pagination?.Tags ?? Enumerable.Empty<Tag>();
+
+            // Remove this tag from the query
+            var queryTags = currentTags.Where(t => !t.Label.Equals(tag.Label, StringComparison.OrdinalIgnoreCase));
 
             return _htmlGenerator.GenerateActionLink(
                 viewContext: ViewContext,
@@ -81,7 +103,7 @@ namespace Linx.Support
         {
             var tagSpan = new TagBuilder("span");
 
-            tagSpan.Attributes["class"] = BadgeClassesReadOnly;
+            tagSpan.Attributes["class"] = BadgeClasses;
 
             tagSpan.InnerHtml.Append(tag.Label);
 

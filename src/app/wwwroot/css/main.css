@@ -77,16 +77,20 @@ a {
     font-size: 5em;
 }
 
-.tag-links a:link, .tag-links a:visited, .tag-links a:hover, .tag-links a:active, .tag-cloud a:link, .tag-cloud a:visited, .tag-cloud a:hover, .tag-cloud a:active {
+.tag-links .badge, .tag-cloud .badge, .query-tags .badge {
+    margin-right: 6px;
+}
+
+.tag-links a:link, .tag-links a:visited, .tag-links a:hover, .tag-links a:active, .tag-cloud a:link, .tag-cloud a:visited, .tag-cloud a:hover, .tag-cloud a:active, .query-tags a:link, .query-tags a:visited, .query-tags a:hover, .query-tags a:active {
     color: #ffffff;
 }
 
-.tag-links a:hover, .tag-cloud a:hover {
+.tag-links a.bg-primary:hover, .tag-cloud a.bg-primary:hover, .query-tags a.bg-primary:hover {
     background-color: #0143a3 !important;
 }
 
-.tag-links .badge, .query-tags .badge {
-    margin-right: 6px;
+.tag-links a.bg-secondary:hover, .tag-cloud a.bg-secondary:hover, .query-tags a.bg-secondary:hover {
+    background-color: #3d4246 !important;
 }
 
 .mab-bootstrap-taginput {

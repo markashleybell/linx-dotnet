@@ -31,16 +31,20 @@
     font-size: 5em;
 }
 
-.tag-links, .tag-cloud {
+.tag-links, .tag-cloud, .query-tags {
+    .badge {
+        margin-right: 6px;
+    }
+
     a:link, a:visited, a:hover, a:active {
         color: #ffffff;
     }
 
-    a:hover {
+    a.bg-primary:hover {
         background-color: darken(#0d6efd, 20%) !important;
     }
-}
 
-.tag-links .badge, .query-tags .badge {
-    margin-right: 6px;
+    a.bg-secondary:hover {
+        background-color: darken(#6c757d, 20%) !important;
+    }
 }
