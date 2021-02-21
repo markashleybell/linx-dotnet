@@ -2,13 +2,25 @@
 
 <div class="row">
     <div class="col">
-        <div class="tag-cloud">
+        <svg class="tag-cloud"></svg>
+
+        @*<div class="tag-cloud">
 
             @foreach (var tag in Model.Tags)
             {
                 <a asp-action="Index" asp-controller="Links" asp-route-query="[@tag.Label]" class="badge bg-primary badge-tag @Model.GetClass(tag)">@tag.Label <span class="badge bg-dark">@tag.UseCount</span></a>
             }
 
-        </div>
+        </div>*@
     </div>
 </div>
+
+
+@section scripts {
+    <script>
+        const _TAGS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Tags.Select(t => new { text = t.Label.ToUpperInvariant(), size = t.UseCount * 20 })));
+
+    </script>
+
+    <script src="~/js/dist/tagcloud.js" asp-append-version="true"></script>
+}
