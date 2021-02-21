@@ -15,6 +15,7 @@ namespace Linx.Models
         [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Url { get; set; }
 
         public string Abstract { get; set; }
