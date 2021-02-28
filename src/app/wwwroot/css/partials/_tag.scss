@@ -15,3 +15,13 @@
         background-color: darken(#6c757d, 20%) !important;
     }
 }
+
+.tag-links .btn-copy-tags {
+    padding: 0;
+    margin-left: 20px;
+
+    img {
+        max-width: 12px;
+        display: block;
+    }
+}

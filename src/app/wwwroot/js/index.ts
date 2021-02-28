@@ -1,3 +1,3 @@
-export function test() {
-    alert('TEST');
-}
+import ClipboardJS from 'clipboard';
+
+new ClipboardJS('.btn-copy-tags');

@@ -64,6 +64,16 @@ a {
     background-color: #3d4246 !important;
 }
 
+.tag-links .btn-copy-tags {
+    padding: 0;
+    margin-left: 20px;
+}
+
+.tag-links .btn-copy-tags img {
+    max-width: 12px;
+    display: block;
+}
+
 .tag-cloud {
     padding: 30px 0;
     text-align: center;

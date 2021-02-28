@@ -32,6 +32,11 @@ namespace Linx.Support
         public string BadgeClasses { get; set; }
             = "badge bg-secondary";
 
+        public bool CopyButton { get; set; }
+
+        public string CopyButtonClasses { get; set; }
+            = "btn btn-link btn-copy btn-copy-tags";
+
         [HtmlAttributeNotBound]
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -51,6 +56,23 @@ namespace Linx.Support
             foreach (var t in Tags.OrderBy(t => t.Label).Select(html))
             {
                 output.Content.AppendHtml(t);
+            }
+
+            if (CopyButton)
+            {
+                var tagImg = new TagBuilder("img");
+
+                tagImg.Attributes["src"] = "/img/clippy.svg";
+                tagImg.Attributes["alt"] = "Copy Tags";
+
+                var tagButton = new TagBuilder("button");
+
+                tagButton.Attributes["class"] = CopyButtonClasses;
+                tagButton.Attributes["data-clipboard-text"] = string.Join("|", Tags.Select(t => t.Label));
+
+                tagButton.InnerHtml.AppendHtml(tagImg);
+
+                output.Content.AppendHtml(tagButton);
             }
 
             output.TagMode = TagMode.StartTagAndEndTag;
