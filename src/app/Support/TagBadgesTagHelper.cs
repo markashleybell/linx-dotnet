@@ -68,7 +68,7 @@ namespace Linx.Support
                 var tagButton = new TagBuilder("button");
 
                 tagButton.Attributes["class"] = CopyButtonClasses;
-                tagButton.Attributes["data-clipboard-text"] = string.Join("|", Tags.Select(t => t.Label));
+                tagButton.Attributes["data-clipboard-text"] = string.Join("|", Tags.OrderBy(t => t.Label).Select(t => t.Label));
 
                 tagButton.InnerHtml.AppendHtml(tagImg);
 
