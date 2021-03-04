@@ -64,7 +64,12 @@ window.addEventListener('load', () => {
             return;
         }
 
-        chrome.tabs.executeScript({ file: 'content.js' });
+        const tabs = await chrome.tabs.query({
+            currentWindow: true,
+            active: true
+        });
+
+        chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, files: ['content.js'] });
 
         try {
             const tagsUrl = apiUrl + '/tags';
