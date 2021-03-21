@@ -84,6 +84,7 @@ window.addEventListener('load', () => {
             new TagInput<string>({
                 input: tagsInput,
                 data: response || [],
+                maxNumberOfSuggestions: 5,
                 getId: item => item,
                 getLabel: item => item,
                 newItemFactory: label => Promise.resolve(label),

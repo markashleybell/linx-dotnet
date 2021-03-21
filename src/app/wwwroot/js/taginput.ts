@@ -8,6 +8,7 @@ const tagInputElement = document.getElementsByClassName('tag-input')[0];
 new TagInput<string>({
     input: (tagInputElement as HTMLElement),
     data: _ALL_TAGS || [],
+    maxNumberOfSuggestions: 5,
     getId: item => item,
     getLabel: item => item,
     newItemFactory: label => Promise.resolve(label),
