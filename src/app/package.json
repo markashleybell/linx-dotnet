@@ -44,6 +44,6 @@
     },
     "dependencies": {
         "clipboard": "^2.0.8",
-        "mab-bootstrap-taginput": "^0.6.0"
+        "mab-bootstrap-taginput": "^0.7.0"
     }
 }
