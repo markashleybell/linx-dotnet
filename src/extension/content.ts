@@ -1,30 +1,37 @@
 import {
-    LinkExists,
+    LinkExistsResponse,
     onMessageReceived,
-    PageDetails,
+    PageDetailsResponse,
     post,
     settings,
     validateSettings,
 } from './common';
 
-onMessageReceived('pagedetailsrequest', (_) => {
-    const message = new PageDetails(
+const currentUrl = window.location.href;
+
+let linxExistsResponse = new LinkExistsResponse(currentUrl, false);
+
+onMessageReceived('linkexistsrequest', () => {
+    chrome.runtime.sendMessage(linxExistsResponse);
+});
+
+onMessageReceived('pagedetailsrequest', () => {
+    const pageDetailsResponse = new PageDetailsResponse(
         document.title,
         window.location.href,
         window.getSelection().toString()
     );
-    chrome.runtime.sendMessage(message);
+
+    chrome.runtime.sendMessage(pageDetailsResponse);
 });
 
-window.addEventListener('load', (_) => {
+window.addEventListener('load', () => {
     chrome.storage.sync.get([...settings.keys()], async (stored) => {
         const [settingsAreValid, apiUrl, apiKey] = validateSettings(stored);
 
         if (!settingsAreValid) {
             return;
         }
-
-        const currentUrl = window.location.href;
 
         const checkUrl = apiUrl + '/check';
 
@@ -40,9 +47,11 @@ window.addEventListener('load', (_) => {
             },
         });
 
-        if (response.exists) {
-            const message = new LinkExists(currentUrl);
-            chrome.runtime.sendMessage(message);
-        }
+        // Cache the result of the query; if the user switches
+        // back to this tab, we just return the cached result
+        // rather than doing a new remote call every time
+        linxExistsResponse = new LinkExistsResponse(currentUrl, response.exists);
+
+        chrome.runtime.sendMessage(linxExistsResponse);
     });
 });

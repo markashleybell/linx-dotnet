@@ -5,7 +5,11 @@ export const greenIcon: { [index: number]: string } = {
     512: 'icon-green-512x512.png',
 };
 
-export type MessageType = 'pagedetailsrequest' | 'pagedetails' | 'linkexists';
+export type MessageType =
+    | 'pagedetailsrequest'
+    | 'pagedetailsresponse'
+    | 'linkexistsrequest'
+    | 'linkexistsresponse';
 
 export interface Message {
     readonly type: MessageType;
@@ -19,19 +23,27 @@ export class PageDetailsRequest implements Message {
     }
 }
 
-export class PageDetails implements Message {
+export class PageDetailsResponse implements Message {
     readonly type: MessageType;
 
     constructor(public title: string, public url: string, public abstract: string) {
-        this.type = 'pagedetails';
+        this.type = 'pagedetailsresponse';
     }
 }
 
-export class LinkExists implements Message {
+export class LinkExistsRequest implements Message {
     readonly type: MessageType;
 
-    constructor(public url: string) {
-        this.type = 'linkexists';
+    constructor() {
+        this.type = 'linkexistsrequest';
+    }
+}
+
+export class LinkExistsResponse implements Message {
+    readonly type: MessageType;
+
+    constructor(public url: string, public linkExists: boolean) {
+        this.type = 'linkexistsresponse';
     }
 }
 
@@ -58,10 +70,13 @@ export const settings: Map<Setting, SettingMetadata> = new Map();
 settings.set(Setting.ApiUrl, { name: 'API Endpoint URL' });
 settings.set(Setting.ApiKey, { name: 'API Key' });
 
-export function onMessageReceived(messageType: MessageType, callback: (message: Message) => void) {
-    chrome.runtime.onMessage.addListener((msg: Message) => {
+export function onMessageReceived(
+    messageType: MessageType,
+    callback: (message: Message, sender?: chrome.runtime.MessageSender) => void
+) {
+    chrome.runtime.onMessage.addListener((msg, sender) => {
         if (msg.type === messageType) {
-            callback(msg);
+            callback(msg, sender);
         }
     });
 }
