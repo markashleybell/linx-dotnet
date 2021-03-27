@@ -1,2 +1,6 @@
 https://stackoverflow.com/questions/61462586/can-i-enable-sourcemaps-in-a-chrome-extension
 https://bugs.chromium.org/p/chromium/issues/detail?id=1052872#c14
+
+Attribute: https://www.flaticon.com/free-icon/bookmark_892346
+
+https://realfavicongenerator.net/

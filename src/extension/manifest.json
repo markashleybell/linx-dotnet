@@ -22,10 +22,23 @@
         },
         "default_popup": "popup.html"
     },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*", 
+                "https://*/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
     "permissions": [
         "activeTab",
-        "storage",
-        "scripting"
+        "storage"
     ],
     "host_permissions": [
         "https://*/*"

@@ -8,6 +8,7 @@ module.exports = {
         library: 'LinxChromeExtension'
     },
     entry: {
+        'background': './background.ts',
         'content': './content.ts',
         'settings': './settings.ts',
         'popup': './popup.ts'
@@ -21,6 +22,11 @@ module.exports = {
                 { from: 'favicon-32x32.png', to: '.' },
                 { from: 'icon-192x192.png', to: '.' },
                 { from: 'icon-512x512.png', to: '.' },
+
+                { from: 'favicon-green-16x16.png', to: '.' },
+                { from: 'favicon-green-32x32.png', to: '.' },
+                { from: 'icon-green-192x192.png', to: '.' },
+                { from: 'icon-green-512x512.png', to: '.' },
 
                 { from: 'manifest.json', to: '.' },
                 { from: 'settings.html', to: '.' },
