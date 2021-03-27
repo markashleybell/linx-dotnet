@@ -28,7 +28,7 @@ namespace Linx.Models
             AllTags?.AsTagJson(t => t.Label);
 
         public static UpdateViewModel From(Link link, IEnumerable<Tag> allTags) =>
-            new UpdateViewModel {
+            new() {
                 ID = link.ID,
                 Title = link.Title,
                 Url = link.Url,
@@ -38,7 +38,7 @@ namespace Linx.Models
             };
 
         public static Link ToLink(UpdateViewModel model) =>
-            new Link(
+            new(
                 model.ID,
                 model.Title,
                 model.Url,

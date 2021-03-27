@@ -25,12 +25,12 @@ namespace Linx.Models
             AllTags?.AsTagJson(t => t.Label);
 
         public static CreateViewModel From(IEnumerable<Tag> allTags) =>
-            new CreateViewModel {
+            new() {
                 AllTags = allTags
             };
 
         public static Link ToLink(CreateViewModel model) =>
-            new Link(
+            new(
                 Guid.NewGuid(),
                 model.Title,
                 model.Url,
