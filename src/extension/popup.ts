@@ -9,6 +9,7 @@ import {
     showErrorStatus,
     showSuccessStatus,
     validateSettings,
+    LinkSavedRequest,
 } from './common';
 
 import { TagInput } from 'mab-bootstrap-taginput';
@@ -102,6 +103,8 @@ window.addEventListener('load', () => {
                         ApiKey: apiKey,
                     },
                 });
+
+                chrome.tabs.sendMessage(currentTab.id, new LinkSavedRequest());
 
                 showSuccessStatus(status, 'Saved', 1000, window.close);
             } catch (e) {

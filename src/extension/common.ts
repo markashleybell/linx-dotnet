@@ -9,7 +9,8 @@ export type MessageType =
     | 'pagedetailsrequest'
     | 'pagedetailsresponse'
     | 'linkexistsrequest'
-    | 'linkexistsresponse';
+    | 'linkexistsresponse'
+    | 'linksavedrequest';
 
 export interface Message {
     readonly type: MessageType;
@@ -44,6 +45,14 @@ export class LinkExistsResponse implements Message {
 
     constructor(public url: string, public linkExists: boolean) {
         this.type = 'linkexistsresponse';
+    }
+}
+
+export class LinkSavedRequest implements Message {
+    readonly type: MessageType;
+
+    constructor() {
+        this.type = 'linksavedrequest';
     }
 }
 

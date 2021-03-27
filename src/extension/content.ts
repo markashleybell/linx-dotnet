@@ -11,6 +11,12 @@ const currentUrl = window.location.href;
 
 let linxExistsResponse = new LinkExistsResponse(currentUrl, false);
 
+onMessageReceived('linksavedrequest', () => {
+    linxExistsResponse = new LinkExistsResponse(currentUrl, true);
+
+    chrome.runtime.sendMessage(linxExistsResponse);
+});
+
 onMessageReceived('linkexistsrequest', () => {
     chrome.runtime.sendMessage(linxExistsResponse);
 });
