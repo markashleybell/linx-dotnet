@@ -1,20 +1,17 @@
-import { hideStatus, Setting, settings, showInfoStatus, showErrorStatus, showSuccessStatus } from './common';
+import {
+    ApiErrorResponse,
+    onMessageReceived,
+    PageDetails,
+    PageDetailsRequest,
+    post,
+    settings,
+    showInfoStatus,
+    showErrorStatus,
+    showSuccessStatus,
+    validateSettings,
+} from './common';
+
 import { TagInput } from 'mab-bootstrap-taginput';
-
-interface PageDetails {
-    title: string;
-    url: string;
-    abstract: string;
-}
-
-interface ApiValidationError {
-    key: string;
-    value: string[];
-}
-
-interface ApiErrorResponse {
-    errors: ApiValidationError[];
-}
 
 const form = document.getElementById('bookmark-details') as HTMLFormElement;
 const status = document.getElementById('status') as HTMLSpanElement;
@@ -24,36 +21,17 @@ const tagsInput = document.getElementById('tags') as HTMLInputElement;
 const abstractInput = document.getElementById('abstract') as HTMLInputElement;
 
 const inputs: Record<string, HTMLInputElement> = {
-    'Title': titleInput,
-    'Url': urlInput,
-    'Tags': tagsInput,
-    'Abstract': abstractInput
-}
+    Title: titleInput,
+    Url: urlInput,
+    Tags: tagsInput,
+    Abstract: abstractInput,
+};
 
-// This callback function is called when the content script
-// has been injected and returned its results
-function onPageDetailsReceived(pageDetails: PageDetails) {
-    titleInput.value = pageDetails.title;
-    urlInput.value = pageDetails.url;
-    abstractInput.value = pageDetails.abstract;
-}
-
-function validateSettings(settings: { [key: string]: any }): [boolean, string, string] {
-    const apiUrl = settings[Setting.ApiUrl]?.trim();
-    const apiKey = settings[Setting.ApiKey]?.trim();
-
-    return apiUrl && apiKey 
-        ? [true, apiUrl, apiKey]
-        : [false, null, null];
-}
-
-async function post(url: string, options: RequestInit) {
-    const response = await fetch(url, options);
-    const json = await response.json();
-    return response.ok ? json : Promise.reject(json);
-}
-
-chrome.runtime.onMessage.addListener(onPageDetailsReceived);
+onMessageReceived('pagedetails', (msg: PageDetails) => {
+    titleInput.value = msg.title;
+    urlInput.value = msg.url;
+    abstractInput.value = msg.abstract;
+});
 
 window.addEventListener('load', () => {
     chrome.storage.sync.get([...settings.keys()], async (stored) => {
@@ -66,10 +44,12 @@ window.addEventListener('load', () => {
 
         const tabs = await chrome.tabs.query({
             currentWindow: true,
-            active: true
+            active: true,
         });
 
-        chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, files: ['content.js'] });
+        const currentTab = tabs[0];
+
+        chrome.tabs.sendMessage(currentTab.id, new PageDetailsRequest());
 
         try {
             const tagsUrl = apiUrl + '/tags';
@@ -78,17 +58,18 @@ window.addEventListener('load', () => {
                 method: 'POST',
                 headers: {
                     ApiKey: apiKey,
-                }
+                },
             });
-    
+
             new TagInput<string>({
                 input: tagsInput,
                 data: response || [],
                 maxNumberOfSuggestions: 5,
-                getId: item => item,
-                getLabel: item => item,
-                newItemFactory: label => Promise.resolve(label),
-                itemTemplate: '<div class="{{globalCssClassPrefix}}-tag" data-id="{{id}}" data-label="{{label}}">{{label}} <i class="{{globalCssClassPrefix}}-removetag bi bi-x"></i></div>'
+                getId: (item) => item,
+                getLabel: (item) => item,
+                newItemFactory: (label) => Promise.resolve(label),
+                itemTemplate:
+                    '<div class="{{globalCssClassPrefix}}-tag" data-id="{{id}}" data-label="{{label}}">{{label}} <i class="{{globalCssClassPrefix}}-removetag bi bi-x"></i></div>',
             });
         } catch (e) {
             const errors = (e as ApiErrorResponse).errors;
@@ -104,13 +85,13 @@ window.addEventListener('load', () => {
 
         form.addEventListener('submit', async (event: Event) => {
             event.preventDefault();
-        
+
             for (const k in inputs) {
                 inputs[k].classList.remove('is-invalid');
             }
 
             showInfoStatus(status, 'Saving...');
-        
+
             try {
                 const createUrl = apiUrl + '/create';
 
@@ -119,9 +100,9 @@ window.addEventListener('load', () => {
                     body: new FormData(form),
                     headers: {
                         ApiKey: apiKey,
-                    }
+                    },
                 });
-        
+
                 showSuccessStatus(status, 'Saved', 1000, window.close);
             } catch (e) {
                 const errors = (e as ApiErrorResponse).errors;

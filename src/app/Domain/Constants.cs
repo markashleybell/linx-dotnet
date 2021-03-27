@@ -5,5 +5,7 @@ namespace Linx.Domain
         public const string SiteRootUrl = "/";
 
         public const string ApiKeyHeaderName = "ApiKey";
+
+        public const string AllowAnyOrigin = nameof(AllowAnyOrigin);
     }
 }

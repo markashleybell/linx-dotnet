@@ -43,5 +43,9 @@
         "bootstrap-icons": "^1.4.0",
         "mab-bootstrap-taginput": "^0.7.0",
         "mustache": "^4.1.0"
+    },
+    "prettier": {
+        "printWidth": 100,
+        "singleQuote": true
     }
 }

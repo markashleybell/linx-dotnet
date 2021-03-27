@@ -5,8 +5,10 @@ using Linx.Data;
 using Linx.Functions;
 using Linx.Models;
 using Linx.Support;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static Linx.Domain.Constants;
 
 namespace Linx.Controllers
 {
@@ -62,6 +64,20 @@ namespace Linx.Controllers
             var tagLabels = tags.Select(t => t.Label);
 
             return Json(tagLabels);
+        }
+
+        [EnableCors(AllowAnyOrigin)]
+        [RequireApiKey]
+        [HttpPost]
+        public async Task<IActionResult> Check(CheckViewModel model)
+        {
+            var apiKey = GetApiKey();
+
+            var user = await Repository.FindUserByApiKey(apiKey);
+
+            var exists = await Repository.CheckIfLinkExistsByUrlPrefix(user.ID, model.Url);
+
+            return Json(new { exists });
         }
 
         private string GetApiKey()

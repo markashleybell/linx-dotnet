@@ -23,6 +23,8 @@ namespace Linx.Data
 
         Task DeleteLinkAsync(Guid userID, Guid id);
 
+        Task<bool> CheckIfLinkExistsByUrlPrefix(Guid userID, string urlPrefix);
+
         Task<IEnumerable<Tag>> ReadAllTagsAsync(Guid userID);
 
         Task MergeTagsAsync(Guid userID, Guid id, IEnumerable<Guid> tagIdsToMerge);

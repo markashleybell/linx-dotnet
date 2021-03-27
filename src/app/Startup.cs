@@ -1,5 +1,3 @@
-using System;
-using System.Security.Claims;
 using Linx.Data;
 using Linx.Services;
 using Linx.Support;
@@ -11,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using static Linx.Domain.Constants;
 
 namespace Linx
 {
@@ -50,6 +48,8 @@ namespace Linx
 
             services.AddScoped<IRepository, SqlServerRepository>();
 
+            services.AddCors(options => options.AddPolicy(AllowAnyOrigin, p => p.WithMethods(HttpMethods.Post).AllowAnyOrigin().AllowAnyHeader()));
+
             services.AddControllersWithViews();
         }
 
@@ -69,6 +69,8 @@ namespace Linx
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseCookiePolicy();
 

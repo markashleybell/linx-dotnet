@@ -1,14 +1,52 @@
-export interface LinxChromeExtension {
-    getPageDetails(callback: (message: any) => void): void;
+export const greenIcon: { [index: number]: string } = {
+    16: 'favicon-green-16x16.png',
+    32: 'favicon-green-32x32.png',
+    192: 'icon-green-192x192.png',
+    512: 'icon-green-512x512.png',
+};
+
+export type MessageType = 'pagedetailsrequest' | 'pagedetails' | 'linkexists';
+
+export interface Message {
+    readonly type: MessageType;
 }
 
-export interface Window {
-    LinxChromeExtension: LinxChromeExtension;
+export class PageDetailsRequest implements Message {
+    readonly type: MessageType;
+
+    constructor() {
+        this.type = 'pagedetailsrequest';
+    }
+}
+
+export class PageDetails implements Message {
+    readonly type: MessageType;
+
+    constructor(public title: string, public url: string, public abstract: string) {
+        this.type = 'pagedetails';
+    }
+}
+
+export class LinkExists implements Message {
+    readonly type: MessageType;
+
+    constructor(public url: string) {
+        this.type = 'linkexists';
+    }
+}
+
+export interface ApiValidationError {
+    key: string;
+    value: string[];
+}
+
+export interface ApiErrorResponse {
+    errors: ApiValidationError[];
 }
 
 export enum Setting {
     ApiUrl = 'api-url',
-    ApiKey = 'api-key'
+    ApiKey = 'api-key',
 }
 
 export interface SettingMetadata {
@@ -20,17 +58,26 @@ export const settings: Map<Setting, SettingMetadata> = new Map();
 settings.set(Setting.ApiUrl, { name: 'API Endpoint URL' });
 settings.set(Setting.ApiKey, { name: 'API Key' });
 
-export function hideStatus(element: HTMLElement) {
-    element.classList.add("status-hidden");
+export function onMessageReceived(messageType: MessageType, callback: (message: Message) => void) {
+    chrome.runtime.onMessage.addListener((msg: Message) => {
+        if (msg.type === messageType) {
+            callback(msg);
+        }
+    });
 }
 
-function showStatus(element: HTMLElement, message: string, statusClass: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
-    element.classList.remove(
-        "status-hidden",
-        "bg-secondary",
-        "bg-success",
-        "bg-danger"
-    );
+export function hideStatus(element: HTMLElement) {
+    element.classList.add('status-hidden');
+}
+
+function showStatus(
+    element: HTMLElement,
+    message: string,
+    statusClass: string,
+    autoHideAfterMs?: number,
+    onAfterHide?: () => void
+) {
+    element.classList.remove('status-hidden', 'bg-secondary', 'bg-success', 'bg-danger');
 
     element.classList.add(statusClass);
     element.innerText = message;
@@ -45,14 +92,42 @@ function showStatus(element: HTMLElement, message: string, statusClass: string, 
     }
 }
 
-export function showInfoStatus(element: HTMLElement, message: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
-    showStatus(element, message, "bg-secondary", autoHideAfterMs, onAfterHide);
+export function showInfoStatus(
+    element: HTMLElement,
+    message: string,
+    autoHideAfterMs?: number,
+    onAfterHide?: () => void
+) {
+    showStatus(element, message, 'bg-secondary', autoHideAfterMs, onAfterHide);
 }
 
-export function showSuccessStatus(element: HTMLElement, message: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
-    showStatus(element, message, "bg-success", autoHideAfterMs, onAfterHide);
+export function showSuccessStatus(
+    element: HTMLElement,
+    message: string,
+    autoHideAfterMs?: number,
+    onAfterHide?: () => void
+) {
+    showStatus(element, message, 'bg-success', autoHideAfterMs, onAfterHide);
 }
 
-export function showErrorStatus(element: HTMLElement, message: string, autoHideAfterMs?: number, onAfterHide?: () => void) {
-    showStatus(element, message, "bg-danger", autoHideAfterMs, onAfterHide);
+export function showErrorStatus(
+    element: HTMLElement,
+    message: string,
+    autoHideAfterMs?: number,
+    onAfterHide?: () => void
+) {
+    showStatus(element, message, 'bg-danger', autoHideAfterMs, onAfterHide);
+}
+
+export async function post(url: string, options: RequestInit) {
+    const response = await fetch(url, options);
+    const json = await response.json();
+    return response.ok ? json : Promise.reject(json);
+}
+
+export function validateSettings(settings: { [key: string]: any }): [boolean, string, string] {
+    const apiUrl = settings[Setting.ApiUrl]?.trim();
+    const apiKey = settings[Setting.ApiKey]?.trim();
+
+    return apiUrl && apiKey ? [true, apiUrl, apiKey] : [false, null, null];
 }
