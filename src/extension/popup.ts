@@ -1,7 +1,7 @@
 import {
     ApiErrorResponse,
     onMessageReceived,
-    PageDetails,
+    PageDetailsResponse,
     PageDetailsRequest,
     post,
     settings,
@@ -9,6 +9,7 @@ import {
     showErrorStatus,
     showSuccessStatus,
     validateSettings,
+    LinkSavedRequest,
 } from './common';
 
 import { TagInput } from 'mab-bootstrap-taginput';
@@ -27,7 +28,7 @@ const inputs: Record<string, HTMLInputElement> = {
     Abstract: abstractInput,
 };
 
-onMessageReceived('pagedetails', (msg: PageDetails) => {
+onMessageReceived('pagedetailsresponse', (msg: PageDetailsResponse) => {
     titleInput.value = msg.title;
     urlInput.value = msg.url;
     abstractInput.value = msg.abstract;
@@ -95,13 +96,15 @@ window.addEventListener('load', () => {
             try {
                 const createUrl = apiUrl + '/create';
 
-                const response = await post(createUrl, {
+                const _ = await post(createUrl, {
                     method: 'POST',
                     body: new FormData(form),
                     headers: {
                         ApiKey: apiKey,
                     },
                 });
+
+                chrome.tabs.sendMessage(currentTab.id, new LinkSavedRequest());
 
                 showSuccessStatus(status, 'Saved', 1000, window.close);
             } catch (e) {

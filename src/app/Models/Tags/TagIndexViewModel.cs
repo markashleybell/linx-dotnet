@@ -7,6 +7,7 @@ namespace Linx.Models
     {
         public IEnumerable<Tag> Tags { get; set; }
 
+#pragma warning disable IDE0046 // Convert to conditional expression
         public string GetClass(Tag tag)
         {
             if (tag.UseCount >= 20)
@@ -24,14 +25,13 @@ namespace Linx.Models
                 return "badge-tag-md";
             }
 
-#pragma warning disable IDE0046 // Convert to conditional expression
             if (tag.UseCount >= 5)
-#pragma warning restore IDE0046 // Convert to conditional expression
             {
                 return "badge-tag-sm";
             }
 
             return "badge-tag-xs";
         }
+#pragma warning restore IDE0046 // Convert to conditional expression
     }
 }

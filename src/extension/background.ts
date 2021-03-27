@@ -1,13 +1,12 @@
-import { greenIcon, onMessageReceived } from './common';
+import { greenIcon, LinkExistsResponse, LinkExistsRequest, onMessageReceived } from './common';
 
-onMessageReceived('linkexists', async (_) => {
-    const tabs = await chrome.tabs.query({
-        currentWindow: true,
-        active: true,
-    });
+onMessageReceived('linkexistsresponse', (msg: LinkExistsResponse, sender) => {
+    if (msg.linkExists) {
+        chrome.action.disable(sender.tab.id);
+        chrome.action.setIcon({ path: greenIcon, tabId: sender.tab.id });
+    }
+});
 
-    const currentTab = tabs[0];
-
-    chrome.action.disable(currentTab.id);
-    chrome.action.setIcon({ path: greenIcon, tabId: currentTab.id });
+chrome.tabs.onActivated.addListener((tab) => {
+    chrome.tabs.sendMessage(tab.tabId, new LinkExistsRequest());
 });

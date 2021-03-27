@@ -64,20 +64,19 @@ namespace Linx.Data
                 Tags = tagList
             };
 
-            using (var connection = new SqlConnection(_cfg.ConnectionString))
-            {
-                var reader = await connection.QueryMultipleAsync(
-                    sql: "ReadLinks",
-                    param: param,
-                    commandType: CommandType.StoredProcedure
-                );
+            using var connection = new SqlConnection(_cfg.ConnectionString);
 
-                var total = await reader.ReadSingleOrDefaultAsync<int?>();
-                var pageCount = await reader.ReadSingleOrDefaultAsync<int?>();
-                var links = await reader.ReadAsync<ListViewLink>();
+            var reader = await connection.QueryMultipleAsync(
+                sql: "ReadLinks",
+                param: param,
+                commandType: CommandType.StoredProcedure
+            );
 
-                return (total.GetValueOrDefault(0), pageCount.GetValueOrDefault(0), links ?? Enumerable.Empty<ListViewLink>());
-            }
+            var total = await reader.ReadSingleOrDefaultAsync<int?>();
+            var pageCount = await reader.ReadSingleOrDefaultAsync<int?>();
+            var links = await reader.ReadAsync<ListViewLink>();
+
+            return (total ?? 0, pageCount ?? 0, links ?? Enumerable.Empty<ListViewLink>());
         }
 
         public async Task<Link> UpdateLinkAsync(Guid userID, Link link) =>
@@ -153,18 +152,16 @@ namespace Linx.Data
 
         private async Task WithConnectionAsync(Func<SqlConnection, Task> action)
         {
-            using (var connection = new SqlConnection(_cfg.ConnectionString))
-            {
-                await action(connection);
-            }
+            using var connection = new SqlConnection(_cfg.ConnectionString);
+
+            await action(connection);
         }
 
         private async Task<T> WithConnectionAsync<T>(Func<SqlConnection, Task<T>> action)
         {
-            using (var connection = new SqlConnection(_cfg.ConnectionString))
-            {
-                return await action(connection);
-            }
+            using var connection = new SqlConnection(_cfg.ConnectionString);
+
+            return await action(connection);
         }
     }
 }
