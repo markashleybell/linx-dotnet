@@ -1,7 +1,7 @@
 import {
-    LinkExistsResponse,
     onMessageReceived,
     PageDetailsResponse,
+    PageStateResponse,
     post,
     settings,
     validateSettings,
@@ -9,16 +9,16 @@ import {
 
 const currentUrl = window.location.href;
 
-let linxExistsResponse = new LinkExistsResponse(currentUrl, false);
+let state = new PageStateResponse(currentUrl, false, true);
 
 onMessageReceived('linksavedrequest', () => {
-    linxExistsResponse = new LinkExistsResponse(currentUrl, true);
+    state = new PageStateResponse(currentUrl, true, false);
 
-    chrome.runtime.sendMessage(linxExistsResponse);
+    chrome.runtime.sendMessage(state);
 });
 
-onMessageReceived('linkexistsrequest', () => {
-    chrome.runtime.sendMessage(linxExistsResponse);
+onMessageReceived('pagestaterequest', () => {
+    chrome.runtime.sendMessage(state);
 });
 
 onMessageReceived('pagedetailsrequest', () => {
@@ -56,8 +56,8 @@ window.addEventListener('load', () => {
         // Cache the result of the query; if the user switches
         // back to this tab, we just return the cached result
         // rather than doing a new remote call every time
-        linxExistsResponse = new LinkExistsResponse(currentUrl, response.exists);
+        state = new PageStateResponse(currentUrl, response.exists, false);
 
-        chrome.runtime.sendMessage(linxExistsResponse);
+        chrome.runtime.sendMessage(state);
     });
 });

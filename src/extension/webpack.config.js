@@ -18,15 +18,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'favicon-16x16.png', to: '.' },
-                { from: 'favicon-32x32.png', to: '.' },
-                { from: 'icon-192x192.png', to: '.' },
-                { from: 'icon-512x512.png', to: '.' },
-
-                { from: 'favicon-green-16x16.png', to: '.' },
-                { from: 'favicon-green-32x32.png', to: '.' },
-                { from: 'icon-green-192x192.png', to: '.' },
-                { from: 'icon-green-512x512.png', to: '.' },
+                { from: 'assets/**', to: '.' },
 
                 { from: 'manifest.json', to: '.' },
                 { from: 'settings.html', to: '.' },

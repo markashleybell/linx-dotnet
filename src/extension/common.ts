@@ -1,15 +1,29 @@
-export const greenIcon: { [index: number]: string } = {
-    16: 'favicon-green-16x16.png',
-    32: 'favicon-green-32x32.png',
-    192: 'icon-green-192x192.png',
-    512: 'icon-green-512x512.png',
+export const icons: { [index: string]: { [index: number]: string } } = {
+    enabled: {
+        16: 'assets/favicon-16x16.png',
+        32: 'assets/favicon-32x32.png',
+        192: 'assets/icon-192x192.png',
+        512: 'assets/icon-512x512.png',
+    },
+    green: {
+        16: 'assets/favicon-green-16x16.png',
+        32: 'assets/favicon-green-32x32.png',
+        192: 'assets/icon-green-192x192.png',
+        512: 'assets/icon-green-512x512.png',
+    },
+    disabled: {
+        16: 'assets/favicon-disabled-16x16.png',
+        32: 'assets/favicon-disabled-32x32.png',
+        192: 'assets/icon-disabled-192x192.png',
+        512: 'assets/icon-disabled-512x512.png',
+    }
 };
 
 export type MessageType =
     | 'pagedetailsrequest'
     | 'pagedetailsresponse'
-    | 'linkexistsrequest'
-    | 'linkexistsresponse'
+    | 'pagestaterequest'
+    | 'pagestateresponse'
     | 'linksavedrequest';
 
 export interface Message {
@@ -32,19 +46,19 @@ export class PageDetailsResponse implements Message {
     }
 }
 
-export class LinkExistsRequest implements Message {
+export class PageStateRequest implements Message {
     readonly type: MessageType;
 
     constructor() {
-        this.type = 'linkexistsrequest';
+        this.type = 'pagestaterequest';
     }
 }
 
-export class LinkExistsResponse implements Message {
+export class PageStateResponse implements Message {
     readonly type: MessageType;
 
-    constructor(public url: string, public linkExists: boolean) {
-        this.type = 'linkexistsresponse';
+    constructor(public url: string, public linkExists: boolean, public disabled: boolean) {
+        this.type = 'pagestateresponse';
     }
 }
 
