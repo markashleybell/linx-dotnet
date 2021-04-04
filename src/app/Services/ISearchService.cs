@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Linx.Domain;
+using Linx.Models;
 
 namespace Linx.Services
 {
@@ -14,6 +15,6 @@ namespace Linx.Services
 
         void RemoveLink(Guid userID, Link link);
 
-        IEnumerable<string> Search(Guid userID, string query);
+        IEnumerable<SearchResult> Search(Guid userID, string query);
     }
 }

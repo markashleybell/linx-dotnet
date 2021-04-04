@@ -23,7 +23,7 @@ async Task Main()
     
     var userID = new Guid("e5754cce-838b-4446-ada8-2d5a6e057555");
     
-    // var (total, pages, links) = await repository.ReadLinksFullAsync(userID, 1, 20, SortColumn.Created, SortDirection.Descending);
+    var (total, pages, links) = await repository.ReadLinksFullAsync(userID, 1, 9999, SortColumn.Created, SortDirection.Descending);
     
     // links.Dump();
     
@@ -31,7 +31,21 @@ async Task Main()
     
     // svc.DeleteAndRebuildIndex(userID, links);
     
-    svc.Search(userID, "plymouth data").Dump();
+    var linkID = new Guid("a84f61ca-6c71-4682-99ce-ccf9ade1bc75");
+    
+    var link = await repository.ReadLinkAsync(userID, linkID);
+    
+    var updated = new Link(linkID, link.Title + " UPDATED", link.Url, link.Abstract + " UPDATED", link.Tags);
+    
+    // svc.UpdateLink(userID, updated);
+    
+    // svc.RemoveLink(userID, link);
+    
+    // svc.AddLink(userID, link);
+    
+    var results = svc.Search(userID, "data clojure");
+
+    results.Dump();
 }
 
 public class TestOptionsMonitor<T> : IOptionsMonitor<T>
