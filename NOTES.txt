@@ -4,3 +4,20 @@ https://bugs.chromium.org/p/chromium/issues/detail?id=1052872#c14
 Attribute: https://www.flaticon.com/free-icon/bookmark_892346
 
 https://realfavicongenerator.net/
+
+
+https://gist.github.com/haneytron/e1cee4067d66b05c4537938e29eb67d9
+https://www.i-programmer.info/programming/theory/2404-the-bloom-filter.html?start=1
+https://github.com/giometrix/BloomFilterCore/blob/master/src/BloomFilterCore/BloomFilter.cs
+https://github.com/penumbra23/Bloomy
+https://github.com/sephirothx/DStruct.NET
+https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/
+https://artem.krylysov.com/blog/2020/07/28/lets-build-a-full-text-search-engine/
+https://endler.dev/2019/tinysearch/
+https://github.com/tinysearch/tinysearch/commit/82c1d36835348718f04c9ca0dd2c1ebf8b19a312
+https://brilliant.org/wiki/cuckoo-filter/
+https://gist.github.com/ayende/be3b9e8b6a90d9f0a3aa8f2d347af99a
+https://roaringbitmap.org/software/
+https://github.com/apache/lucenenet
+https://lucenenet.apache.org/
+https://www.byteblocks.com/Post/How-to-use-Lucene-In-Net-Core-project
