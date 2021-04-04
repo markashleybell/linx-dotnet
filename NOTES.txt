@@ -21,3 +21,7 @@ https://roaringbitmap.org/software/
 https://github.com/apache/lucenenet
 https://lucenenet.apache.org/
 https://www.byteblocks.com/Post/How-to-use-Lucene-In-Net-Core-project
+
+
+https://github.com/apache/lucenenet/blob/master/src/Lucene.Net.Demo/IndexFiles.cs
+https://github.com/apache/lucenenet/blob/master/src/Lucene.Net.Demo/SearchFiles.cs

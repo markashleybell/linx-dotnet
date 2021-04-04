@@ -32,6 +32,9 @@
 
     <ItemGroup>
         <PackageReference Include="Dapper" Version="2.0.78" />
+        <PackageReference Include="Lucene.Net" Version="4.8.0-beta00014" />
+        <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00014" />
+        <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00014" />
         <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.2" />
         <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
             <PrivateAssets>all</PrivateAssets>
