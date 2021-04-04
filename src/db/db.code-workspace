@@ -12,6 +12,9 @@
 			"**/*.code-workspace": true,
 			"bin/": true,
 			"obj/": true
-		}
+		},
+		"dataworkspace.projects": [
+			"db.sqlproj"
+		]
 	}
 }
