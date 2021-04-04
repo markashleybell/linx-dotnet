@@ -79,6 +79,27 @@ namespace Linx.Data
             return (total ?? 0, pageCount ?? 0, links ?? Enumerable.Empty<ListViewLink>());
         }
 
+        public async Task<(int total, int pageCount, IEnumerable<Link> page)> ReadLinksFullAsync(
+            Guid userID,
+            int page,
+            int pageSize,
+            SortColumn sortBy,
+            SortDirection sortDirection,
+            IEnumerable<Tag> tags = null)
+        {
+            /*
+            This is essentially the same query as ReadLinksAsync above,
+            but returning Link entities (with separated tag collections)
+            instead of ListViewLinks with denormalised tag strings.
+            */
+
+            var (total, pageCount, listViewLinks) = await ReadLinksAsync(userID, page, pageSize, sortBy, sortDirection, tags);
+
+            var links = listViewLinks.Select(l => new Link(l.ID, l.Title, l.Url, l.Abstract, l.Tags));
+
+            return (total, pageCount, links);
+        }
+
         public async Task<Link> UpdateLinkAsync(Guid userID, Link link) =>
             await WithConnectionAsync(async conn => {
                 var param = new {

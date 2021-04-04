@@ -19,6 +19,14 @@ namespace Linx.Data
             SortDirection sortDirection,
             IEnumerable<Tag> tags = null);
 
+        Task<(int total, int pageCount, IEnumerable<Link> page)> ReadLinksFullAsync(
+            Guid userID,
+            int page,
+            int pageSize,
+            SortColumn sortBy,
+            SortDirection sortDirection,
+            IEnumerable<Tag> tags = null);
+
         Task<Link> UpdateLinkAsync(Guid userID, Link link);
 
         Task DeleteLinkAsync(Guid userID, Guid id);
