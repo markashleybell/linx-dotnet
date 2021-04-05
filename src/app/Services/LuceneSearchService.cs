@@ -29,77 +29,19 @@ namespace Linx.Services
 
         public void DeleteAndRebuildIndex(Guid userID, IEnumerable<Link> links)
         {
-            var indexPath = GetIndexPath(userID);
+            System.IO.Directory.CreateDirectory(GetIndexPath(userID));
 
-            System.IO.Directory.CreateDirectory(indexPath);
-
-            using var dir = FSDirectory.Open(indexPath);
-
-            var analyzer = new StandardAnalyzer(_luceneVersion);
-
-            var writerConfig = new IndexWriterConfig(_luceneVersion, analyzer) {
-                OpenMode = OpenMode.CREATE
-            };
-
-            var docs = links.Select(AsDocument);
-
-            using var writer = new IndexWriter(dir, writerConfig);
-
-            writer.AddDocuments(docs);
-
-            writer.Flush(triggerMerge: false, applyAllDeletes: false);
+            WithIndexWriter(userID, writer => writer.AddDocuments(links.Select(AsDocument)), overwriteIndex: true);
         }
 
-        public void AddLink(Guid userID, Link link)
-        {
-            var indexPath = GetIndexPath(userID);
+        public void AddLink(Guid userID, Link link) =>
+            WithIndexWriter(userID, writer => writer.AddDocument(AsDocument(link)));
 
-            using var dir = FSDirectory.Open(indexPath);
+        public void RemoveLink(Guid userID, Link link) =>
+            WithIndexWriter(userID, writer => writer.DeleteDocuments(new Term("id", link.ID.ToString())), applyDeletes: true);
 
-            var analyzer = new StandardAnalyzer(_luceneVersion);
-
-            var writerConfig = new IndexWriterConfig(_luceneVersion, analyzer);
-
-            using var writer = new IndexWriter(dir, writerConfig);
-
-            writer.AddDocument(AsDocument(link));
-
-            writer.Flush(triggerMerge: false, applyAllDeletes: false);
-        }
-
-        public void RemoveLink(Guid userID, Link link)
-        {
-            var indexPath = GetIndexPath(userID);
-
-            using var dir = FSDirectory.Open(indexPath);
-
-            var analyzer = new StandardAnalyzer(_luceneVersion);
-
-            var writerConfig = new IndexWriterConfig(_luceneVersion, analyzer);
-
-            using var writer = new IndexWriter(dir, writerConfig);
-
-            writer.DeleteDocuments(new Term("id", link.ID.ToString()));
-
-            writer.Flush(triggerMerge: false, applyAllDeletes: true);
-        }
-
-        public void UpdateLink(Guid userID, Link link)
-        {
-            var indexPath = GetIndexPath(userID);
-
-            using var dir = FSDirectory.Open(indexPath);
-
-            var analyzer = new StandardAnalyzer(_luceneVersion);
-
-            var writerConfig = new IndexWriterConfig(_luceneVersion, analyzer);
-
-            using var writer = new IndexWriter(dir, writerConfig);
-
-            writer.UpdateDocument(new Term("id", link.ID.ToString()), AsDocument(link));
-
-            writer.Flush(triggerMerge: false, applyAllDeletes: false);
-        }
+        public void UpdateLink(Guid userID, Link link) =>
+            WithIndexWriter(userID, writer => writer.UpdateDocument(new Term("id", link.ID.ToString()), AsDocument(link)));
 
         public IEnumerable<SearchResult> Search(Guid userID, string query)
         {
@@ -153,5 +95,22 @@ namespace Linx.Services
 
         private string GetIndexPath(Guid userID) =>
             Path.Combine(_cfg.SearchIndexBasePath, userID.ToString());
+
+        private void WithIndexWriter(Guid userID, Action<IndexWriter> f, bool overwriteIndex = false, bool applyDeletes = false)
+        {
+            var analyzer = new StandardAnalyzer(_luceneVersion);
+
+            var writerConfig = new IndexWriterConfig(_luceneVersion, analyzer) {
+                OpenMode = overwriteIndex ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
+            };
+
+            using var dir = FSDirectory.Open(GetIndexPath(userID));
+
+            using var writer = new IndexWriter(dir, writerConfig);
+
+            f(writer);
+
+            writer.Flush(triggerMerge: false, applyAllDeletes: applyDeletes);
+        }
     }
 }
