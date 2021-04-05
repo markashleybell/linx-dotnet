@@ -22,9 +22,15 @@ namespace Linx.Services
 #pragma warning restore IDE1006 // Naming Styles
 
         private readonly Settings _cfg;
+        private readonly IDateTimeService _dateTimeService;
 
-        public LuceneSearchService(IOptionsMonitor<Settings> optionsMonitor) =>
+        public LuceneSearchService(
+            IOptionsMonitor<Settings> optionsMonitor,
+            IDateTimeService dateTimeService)
+        {
             _cfg = optionsMonitor.CurrentValue;
+            _dateTimeService = dateTimeService;
+        }
 
         public void DeleteAndRebuildIndex(Guid userID, IEnumerable<Link> links)
         {
@@ -65,22 +71,27 @@ namespace Linx.Services
 
             var hits = searcher.Search(luceneQuery, n: 20).ScoreDocs;
 
+            // We don't care about the created/updated date here, as we're just ordering by score anyway
+            var now = _dateTimeService.Now;
+
             var results = hits.Select(h => {
                 var doc = searcher.Doc(h.Doc);
                 return new SearchResult(
                     h.Score,
-                    new Link(
+                    new ListViewLink(
                         new Guid(doc.Get("id")),
                         doc.Get("title"),
                         doc.Get("url"),
                         doc.Get("abstract"),
-                        doc.Get("tags")
+                        doc.Get("tags"),
+                        now,
+                        now
                     )
                 );
             });
 
             // IMPORTANT: ToList materialises the query results; if we don't do this we get an ObjectDisposedException
-            return results.ToList();
+            return results.OrderByDescending(r => r.Score).ToList();
         }
 
         private static Document AsDocument(Link link) =>

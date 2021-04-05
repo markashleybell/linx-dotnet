@@ -1,0 +1,56 @@
+﻿@model Linx.Models.Search.IndexViewModel
+
+@using Linx.Models.Shared
+
+@{ ViewBag.SearchQuery = Model.Query; }
+
+<div class="row mb-4">
+    <div class="col d-flex align-items-center">
+        <div>
+            <div class="btn-group btn-group-sm">
+                @if (Model.Pagination.Page > 1)
+                {
+                    <a class="btn btn-outline-primary" href="/@Model.PageLinkWith(page: 1)">First</a>
+                    <a class="btn btn-outline-primary" href="/@Model.PageLinkWith(page: Model.Pagination.Page - 1)">Previous</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary disabled" href="/@Model.PageLinkWith(page: 1)">First</a>
+                    <a class="btn btn-outline-primary disabled" href="/?page=1&pageSize=@(Model.Pagination.PageSize)">Previous</a>
+                }
+                @foreach (var i in Model.Pagination.DirectPageLinksBefore)
+                {
+                    <a class="btn btn-outline-primary btn-direct-page-link" href="/@Model.PageLinkWith(page: i)">@(i)</a>
+                }
+                <a class="btn btn-primary btn-direct-page-link active" href="/@Model.PageLinkWith(page: Model.Pagination.Page)">@(Model.Pagination.Page)</a>
+                @foreach (var i in Model.Pagination.DirectPageLinksAfter)
+                {
+                    <a class="btn btn-outline-primary btn-direct-page-link" href="/@Model.PageLinkWith(page: i)">@(i)</a>
+                }
+                @if (Model.Pagination.Page < Model.Pagination.Pages)
+                {
+                    <a class="btn btn-outline-primary" href="@Model.PageLinkWith(page: Model.Pagination.Page + 1)">Next</a>
+                    <a class="btn btn-outline-primary" href="/@Model.PageLinkWith(page: Model.Pagination.Pages)">Last</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary disabled" href="/?page=@(Model.Pagination.Pages)&pageSize=@(Model.Pagination.PageSize)">Next</a>
+                    <a class="btn btn-outline-primary disabled" href="/@Model.PageLinkWith(page: Model.Pagination.Pages)">Last</a>
+                }
+            </div>
+        </div>
+        <div class="ps-3"><strong>@Model.Pagination.Total</strong> links</div>
+        <div class="ps-3"><tag-badges tags="Model.Pagination.Tags" pagination="Model.Pagination" remove="true" container-classes="query-tags" /></div>
+    </div>
+</div>
+
+@foreach (var result in Model.Results)
+{
+    var link = new ListViewLinkViewModel { Link = result.Document };
+
+    <partial name="_ListViewLink" model="link" />
+}
+
+@section scripts {
+    <script src="~/js/dist/index.js" asp-append-version="true"></script>
+}

@@ -46,6 +46,8 @@ namespace Linx
             services.AddScoped<IDateTimeService, DateTimeService>();
             services.AddScoped<IUserService, UserService>();
 
+            services.AddScoped<ISearchService, LuceneSearchService>();
+
             services.AddScoped<IRepository, SqlServerRepository>();
 
             services.AddCors(options => options.AddPolicy(AllowAnyOrigin, p => p.WithMethods(HttpMethods.Post).AllowAnyOrigin().AllowAnyHeader()));

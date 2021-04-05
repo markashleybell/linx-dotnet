@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Linx.Domain;
-using Linx.Models;
 
 namespace Linx.Services
 {
