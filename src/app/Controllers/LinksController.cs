@@ -2,7 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Linx.Data;
-using Linx.Models;
+using Linx.Models.Links;
+using Linx.Models.Shared;
 using Linx.Support;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -91,7 +92,7 @@ namespace Linx.Controllers
             var allTags = await Repository.ReadAllTagsAsync(UserID);
 
             return link != null
-                ? (IActionResult)View(UpdateViewModel.From(link, allTags))
+                ? View(UpdateViewModel.From(link, allTags))
                 : NotFound();
         }
 

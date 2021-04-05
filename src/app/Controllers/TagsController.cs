@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Linx.Data;
-using Linx.Models;
+using Linx.Models.Tags;
 using Linx.Support;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,7 +21,7 @@ namespace Linx.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var model = new TagIndexViewModel {
+            var model = new IndexViewModel {
                 Tags = await Repository.ReadAllTagsAsync(UserID)
             };
 
@@ -29,9 +29,9 @@ namespace Linx.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Manage()
+        public async Task<IActionResult> Merge()
         {
-            var model = new TagMergeViewModel {
+            var model = new MergeViewModel {
                 Tags = await Repository.ReadAllTagsAsync(UserID)
             };
 
@@ -39,11 +39,11 @@ namespace Linx.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Merge(TagMergeViewModel model)
+        public async Task<IActionResult> Merge(MergeViewModel model)
         {
             await Repository.MergeTagsAsync(UserID, model.TagID, model.TagIDsToMerge);
 
-            return RedirectToAction(nameof(Manage));
+            return RedirectToAction(nameof(Merge));
         }
     }
 }

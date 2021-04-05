@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Functions;
 using Linx.Models;
+using Linx.Models.Links;
 using Linx.Support;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

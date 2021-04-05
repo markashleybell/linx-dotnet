@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Linx.Domain;
-using Linx.Models;
 using Linx.Support;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;

@@ -3,7 +3,7 @@ using System.Linq;
 using Linx.Data;
 using Linx.Domain;
 
-namespace Linx.Models
+namespace Linx.Models.Shared
 {
     public class PaginationDetails
     {

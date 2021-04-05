@@ -1,6 +1,6 @@
 using Linx.Domain;
 
-namespace Linx.Models
+namespace Linx.Models.Shared
 {
     public class ListViewLinkViewModel
     {

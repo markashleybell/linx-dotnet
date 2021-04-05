@@ -4,9 +4,9 @@ using System.Linq;
 using Linx.Domain;
 using Linx.Functions;
 
-namespace Linx.Models
+namespace Linx.Models.Tags
 {
-    public class TagMergeViewModel
+    public class MergeViewModel
     {
         public IEnumerable<Tag> Tags { get; set; }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using Linx.Domain;
 using static Linx.Functions.Functions;
 
-namespace Linx.Models
+namespace Linx.Models.Links
 {
     public class UpdateViewModel
     {

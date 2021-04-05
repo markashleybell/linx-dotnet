@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Linx.Models;
+using Linx.Models.Users;
 using Linx.Services;
 using Linx.Support;
 using Microsoft.AspNetCore.Authentication;

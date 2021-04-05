@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Linx.Domain;
 
-namespace Linx.Models
+namespace Linx.Models.Tags
 {
-    public class TagIndexViewModel
+    public class IndexViewModel
     {
         public IEnumerable<Tag> Tags { get; set; }
 

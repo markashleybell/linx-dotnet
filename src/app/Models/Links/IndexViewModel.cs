@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Linx.Data;
-using Linx.Domain;
-using Microsoft.AspNetCore.Html;
+using Linx.Models.Shared;
 
-namespace Linx.Models
+namespace Linx.Models.Links
 {
     public class IndexViewModel
     {

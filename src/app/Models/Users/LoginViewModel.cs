@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Linx.Models
+namespace Linx.Models.Users
 {
     public class LoginViewModel
     {

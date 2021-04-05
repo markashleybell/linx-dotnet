@@ -1,11 +1,11 @@
 using System;
 using Linx.Domain;
 
-namespace Linx.Models
+namespace Linx.Services
 {
     public class SearchResult
     {
-        public SearchResult(float score, Link document)
+        public SearchResult(float score, ListViewLink document)
         {
             Score = score;
             Document = document ?? throw new ArgumentNullException(nameof(document));
@@ -13,6 +13,6 @@ namespace Linx.Models
 
         public float Score { get; }
 
-        public Link Document { get; }
+        public ListViewLink Document { get; }
     }
 }
