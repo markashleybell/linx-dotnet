@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Models.Search;
 using Linx.Services;
@@ -26,6 +27,15 @@ namespace Linx.Controllers
             model.Results = _searchService.Search(UserID, model.Query);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> CreateIndexTemp()
+        {
+            var (_, _, links) = await Repository.ReadLinksFullAsync(UserID, 1, 9999, SortColumn.Created, SortDirection.Descending);
+
+            _searchService.DeleteAndRebuildIndex(UserID, links);
+
+            return Ok("OK");
         }
     }
 }

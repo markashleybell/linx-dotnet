@@ -18,6 +18,7 @@ async Task Main()
     };
 
     var optionsMonitor = new TestOptionsMonitor<Settings>(settings); 
+    var dt = new DateTimeService();
     
     var repository = new SqlServerRepository(optionsMonitor);
     
@@ -27,7 +28,7 @@ async Task Main()
     
     // links.Dump();
     
-    var svc = new LuceneSearchService(optionsMonitor);
+    var svc = new LuceneSearchService(optionsMonitor, dt);
     
     // svc.DeleteAndRebuildIndex(userID, links);
     
