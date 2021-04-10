@@ -14,6 +14,8 @@ namespace Linx.Services
 
         void RemoveLink(Guid userID, Link link);
 
+        void RemoveLink(Guid userID, Guid linkID);
+
         IEnumerable<SearchResult> Search(Guid userID, string query);
     }
 }

@@ -29,7 +29,8 @@ namespace Linx.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> CreateIndexTemp()
+        // TODO: Remove and integrate into UI
+        public async Task<IActionResult> RecreateIndex()
         {
             var (_, _, links) = await Repository.ReadLinksFullAsync(UserID, 1, 9999, SortColumn.Created, SortDirection.Descending);
 

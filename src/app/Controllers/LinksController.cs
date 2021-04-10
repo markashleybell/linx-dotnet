@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Linx.Data;
 using Linx.Models.Links;
 using Linx.Models.Shared;
+using Linx.Services;
 using Linx.Support;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -13,14 +14,16 @@ namespace Linx.Controllers
 {
     public class LinksController : ControllerBase
     {
+        private readonly ISearchService _searchService;
+
         public LinksController(
             IOptionsMonitor<Settings> optionsMonitor,
-            IRepository repository)
+            IRepository repository,
+            ISearchService searchService)
             : base(
                 optionsMonitor,
-                repository)
-        {
-        }
+                repository) =>
+            _searchService = searchService;
 
         [HttpGet]
         public async Task<IActionResult> Index(
@@ -76,6 +79,8 @@ namespace Linx.Controllers
 
             var link = await Repository.CreateLinkAsync(UserID, create);
 
+            _searchService.AddLink(UserID, link);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -110,6 +115,8 @@ namespace Linx.Controllers
 
             var link = await Repository.UpdateLinkAsync(UserID, update);
 
+            _searchService.UpdateLink(UserID, link);
+
             return RedirectToAction(nameof(Update), new { id = link.ID });
         }
 
@@ -117,6 +124,8 @@ namespace Linx.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await Repository.DeleteLinkAsync(UserID, id);
+
+            _searchService.RemoveLink(UserID, id);
 
             return RedirectToAction(nameof(Index));
         }

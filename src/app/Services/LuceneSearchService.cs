@@ -43,7 +43,10 @@ namespace Linx.Services
             WithIndexWriter(userID, writer => writer.AddDocument(AsDocument(link)));
 
         public void RemoveLink(Guid userID, Link link) =>
-            WithIndexWriter(userID, writer => writer.DeleteDocuments(new Term("id", link.ID.ToString())), applyDeletes: true);
+            RemoveLink(userID, link.ID);
+
+        public void RemoveLink(Guid userID, Guid linkID) =>
+            WithIndexWriter(userID, writer => writer.DeleteDocuments(new Term("id", linkID.ToString())), applyDeletes: true);
 
         public void UpdateLink(Guid userID, Link link) =>
             WithIndexWriter(userID, writer => writer.UpdateDocument(new Term("id", link.ID.ToString()), AsDocument(link)));

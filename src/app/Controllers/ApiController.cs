@@ -5,6 +5,7 @@ using Linx.Data;
 using Linx.Functions;
 using Linx.Models;
 using Linx.Models.Links;
+using Linx.Services;
 using Linx.Support;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,17 @@ namespace Linx.Controllers
 {
     public class ApiController : Controller
     {
+        private readonly ISearchService _searchService;
+
         public ApiController(
             IOptionsMonitor<Settings> optionsMonitor,
-            IRepository repository)
+            IRepository repository,
+            ISearchService searchService)
         {
             Settings = optionsMonitor.CurrentValue;
             Repository = repository;
+
+            _searchService = searchService;
         }
 
         protected Settings Settings { get; }
@@ -47,7 +53,9 @@ namespace Linx.Controllers
 
             var create = CreateViewModel.ToLink(model);
 
-            await Repository.CreateLinkAsync(user.ID, create);
+            var link = await Repository.CreateLinkAsync(user.ID, create);
+
+            _searchService.AddLink(user.ID, link);
 
             return Json(new { success = true });
         }
