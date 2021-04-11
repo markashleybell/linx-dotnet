@@ -31,7 +31,7 @@ namespace Linx.Data
 
         Task DeleteLinkAsync(Guid userID, Guid id);
 
-        Task<bool> CheckIfLinkExistsByUrlPrefix(Guid userID, string urlPrefix);
+        Task<bool> CheckIfLinkExistsByUrl(Guid userID, string url);
 
         Task<IEnumerable<Tag>> ReadAllTagsAsync(Guid userID);
 

@@ -127,11 +127,11 @@ namespace Linx.Data
                 );
             });
 
-        public async Task<bool> CheckIfLinkExistsByUrlPrefix(Guid userID, string urlPrefix) =>
+        public async Task<bool> CheckIfLinkExistsByUrl(Guid userID, string url) =>
             await WithConnectionAsync(conn => {
                 return conn.QuerySingleAsync<bool>(
-                    sql: "SELECT CAST(CASE WHEN EXISTS (SELECT (1) FROM Links WHERE UserID = @UserID AND Url LIKE @UrlPrefix + '%') THEN 1 ELSE 0 END as BIT)",
-                    param: new { userID, urlPrefix }
+                    sql: "SELECT CAST(CASE WHEN EXISTS (SELECT (1) FROM Links WHERE UserID = @UserID AND Url = @Url) THEN 1 ELSE 0 END as BIT)",
+                    param: new { userID, url }
                 );
             });
 

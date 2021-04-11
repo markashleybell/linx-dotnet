@@ -84,7 +84,7 @@ namespace Linx.Controllers
 
             var user = await Repository.FindUserByApiKey(apiKey);
 
-            var exists = await Repository.CheckIfLinkExistsByUrlPrefix(user.ID, model.Url);
+            var exists = await Repository.CheckIfLinkExistsByUrl(user.ID, model.Url);
 
             return Json(new { exists });
         }
