@@ -62,7 +62,7 @@ window.addEventListener('load', () => {
                 },
             });
 
-            new TagInput<string>({
+            const tagInput = new TagInput<string>({
                 input: tagsInput,
                 data: response || [],
                 maxNumberOfSuggestions: 5,
@@ -72,6 +72,8 @@ window.addEventListener('load', () => {
                 itemTemplate:
                     '<div class="{{globalCssClassPrefix}}-tag" data-id="{{id}}" data-label="{{label}}">{{label}} <i class="{{globalCssClassPrefix}}-removetag bi bi-x"></i></div>',
             });
+
+            tagInput.focus();
         } catch (e) {
             const errors = (e as ApiErrorResponse).errors;
 
