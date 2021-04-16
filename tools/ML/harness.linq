@@ -49,7 +49,7 @@ let data = loader.Load(dbSource);
 
 // data.Preview(10).Dump()
 
-let dataPartitions = ctx.Data.TrainTestSplit(data, testFraction = 0.2)
+let dataPartitions = ctx.Data.TrainTestSplit(data, testFraction = 0.1)
 
 let trainingData = dataPartitions.TrainSet
 let testData = dataPartitions.TestSet
@@ -69,18 +69,18 @@ let trainedModel = trainingPipeline.Fit(trainingData)
 
 let engine = ctx.Model.CreatePredictionEngine<Link, Link>(trainedModel)
 
+let testMetrics = ctx.MulticlassClassification.Evaluate(trainedModel.Transform(testData))
+
+testMetrics.Dump()
+
 let test = {
     Title = "ASP.NET Core Authentication"
     Abstract = "This talks about authentication and authorisation in .NET Core web applications"
     Tags = ""
 }
 
-let prediction = engine.Predict(test)
+// let prediction = engine.Predict(test)
 
-prediction.Dump()
+// prediction.Dump()
 
-let testMetrics = ctx.MulticlassClassification.Evaluate(trainedModel.Transform(testData))
-
-testMetrics.Dump()
-
-ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")
+// ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")
