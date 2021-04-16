@@ -1,5 +1,5 @@
 <Query Kind="FSharpProgram">
-  <Reference Relative="..\..\ml\bin\Debug\net5.0\ml.dll">C:\Src\linx-dotnet\ml\bin\Debug\net5.0\ml.dll</Reference>
+  <Reference Relative="..\..\src\ml\bin\Debug\net5.0\ml.dll">C:\Src\linx-dotnet\src\ml\bin\Debug\net5.0\ml.dll</Reference>
   <NuGetReference>Microsoft.Data.SqlClient</NuGetReference>
   <NuGetReference>Microsoft.ML</NuGetReference>
   <Namespace>LinxML.Common</Namespace>
