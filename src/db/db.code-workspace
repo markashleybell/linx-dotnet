@@ -14,7 +14,7 @@
 			"obj/": true
 		},
 		"dataworkspace.projects": [
-			"db.sqlproj"
+			"./db.sqlproj"
 		]
 	}
 }

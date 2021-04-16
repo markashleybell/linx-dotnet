@@ -1,5 +1,12 @@
 <Query Kind="FSharpProgram">
+  <NuGetReference>Microsoft.Data.SqlClient</NuGetReference>
   <NuGetReference>Microsoft.ML</NuGetReference>
+  <Namespace>Microsoft.Data</Namespace>
+  <Namespace>Microsoft.Data.Sql</Namespace>
+  <Namespace>Microsoft.Data.SqlClient</Namespace>
+  <Namespace>Microsoft.Data.SqlClient.DataClassification</Namespace>
+  <Namespace>Microsoft.Data.SqlClient.Server</Namespace>
+  <Namespace>Microsoft.Data.SqlTypes</Namespace>
   <Namespace>Microsoft.ML</Namespace>
   <Namespace>Microsoft.ML.Calibrators</Namespace>
   <Namespace>Microsoft.ML.Data</Namespace>
@@ -17,24 +24,33 @@ let defaultFeaturesColumn = "Features"
 [<Literal>]
 let defaultPredictedLabelColumn = "PredictedLabel"
 
-let dataPath = Path.GetDirectoryName(Util.CurrentQueryPath) + @"\testdata"
+let dataPath = Path.Combine(Path.GetDirectoryName(Util.CurrentQueryPath), "testdata")
 
 [<CLIMutable>]
 type Link = {
-    [<LoadColumn(0)>] ID : string
-    [<LoadColumn(1)>] Title : string
-    [<LoadColumn(2)>] Body : string
-    [<LoadColumn(3)>] Category : string
+    [<LoadColumn(0)>] Title : string
+    [<LoadColumn(1)>] Abstract : string
+    [<LoadColumn(2)>] Tags : string
 }
 
 [<CLIMutable>]
-type CategoryPrediction = {
-    [<ColumnName(defaultPredictedLabelColumn)>] Category : string
+type TagsPrediction = {
+    [<ColumnName(defaultPredictedLabelColumn)>] Tags : string
 }
 
 let ctx = MLContext(seed = Nullable 0)
 
-let data = ctx.Data.LoadFromTextFile<Link>(dataPath + @"\data.csv", hasHeader = true, allowQuoting = true, separatorChar = ',')
+let loader = ctx.Data.CreateDatabaseLoader<Link>()
+
+let connectionString = "Server=localhost;Database=linx;Trusted_Connection=yes"
+
+let userId = "e5754cce-838b-4446-ada8-2d5a6e057555";
+
+let sql = sprintf "SELECT Title, Abstract, Tags FROM Links WHERE UserID = '%s'" userId
+
+let dbSource = DatabaseSource(SqlClientFactory.Instance, connectionString, sql);
+
+let data = loader.Load(dbSource);
 
 // data.Preview(10).Dump()
 
@@ -44,10 +60,10 @@ let trainingData = dataPartitions.TrainSet
 let testData = dataPartitions.TestSet
 
 let pipeline = EstimatorChain()
-                .Append(ctx.Transforms.Conversion.MapValueToKey(inputColumnName = "Category", outputColumnName = defaultLabelColumn))
+                .Append(ctx.Transforms.Conversion.MapValueToKey(inputColumnName = "Tags", outputColumnName = defaultLabelColumn))
                 .Append(ctx.Transforms.Text.FeaturizeText(inputColumnName = "Title", outputColumnName = "TitleFeaturized"))
-                .Append(ctx.Transforms.Text.FeaturizeText(inputColumnName = "Body", outputColumnName = "BodyFeaturized"))
-                .Append(ctx.Transforms.Concatenate(defaultFeaturesColumn, "TitleFeaturized", "BodyFeaturized"))
+                .Append(ctx.Transforms.Text.FeaturizeText(inputColumnName = "Abstract", outputColumnName = "AbstractFeaturized"))
+                .Append(ctx.Transforms.Concatenate(defaultFeaturesColumn, "TitleFeaturized", "AbstractFeaturized"))
                 .AppendCacheCheckpoint(ctx)
 
 let trainingPipeline = pipeline
@@ -56,21 +72,20 @@ let trainingPipeline = pipeline
 
 let trainedModel = trainingPipeline.Fit(trainingData)
 
-let engine = ctx.Model.CreatePredictionEngine<Link, CategoryPrediction>(trainedModel)
+let engine = ctx.Model.CreatePredictionEngine<Link, TagsPrediction>(trainedModel)
 
-//let test = {
-//    ID = ""
-//    Title = "books"
-//    Body = "https://bookshop.com"
-//    Category = ""
-//}
-//
-//let prediction = engine.Predict(test)
-//
-//prediction.Dump()
+let test = {
+    Title = "ASP.NET Core Authentication"
+    Abstract = "This talks about authentication and authorisation in .NET Core web applications"
+    Tags = ""
+}
 
-// let testMetrics = ctx.MulticlassClassification.Evaluate(trainedModel.Transform(testData))
+let prediction = engine.Predict(test)
 
-// testMetrics.Dump()
+prediction.Dump()
+
+let testMetrics = ctx.MulticlassClassification.Evaluate(trainedModel.Transform(testData))
+
+testMetrics.Dump()
 
 ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")

@@ -367,3 +367,6 @@ FodyWeavers.xsd
 # Webpack output
 src/app/wwwroot/js/dist/
 src/extension/dist/
+
+# ML.NET test model
+/tools/ML/testdata/model.zip

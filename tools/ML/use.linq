@@ -11,38 +11,34 @@
 </Query>
 
 [<Literal>]
-let defaultLabelColumn = "Label"
-[<Literal>]
-let defaultFeaturesColumn = "Features"
-[<Literal>]
 let defaultPredictedLabelColumn = "PredictedLabel"
 
-let dataPath = @"C:\Src\LinkCategoriser\model.zip"
+let dataPath = Path.Combine(Path.GetDirectoryName(Util.CurrentQueryPath), "testdata")
+
+let modelPath = Path.Combine(dataPath, "model.zip")
 
 [<CLIMutable>]
 type Link = {
-    [<LoadColumn(0)>] ID : string
-    [<LoadColumn(1)>] Title : string
-    [<LoadColumn(2)>] Body : string
-    [<LoadColumn(3)>] Category : string
+    [<LoadColumn(0)>] Title : string
+    [<LoadColumn(1)>] Abstract : string
+    [<LoadColumn(2)>] Tags : string
 }
 
 [<CLIMutable>]
-type CategoryPrediction = {
-    [<ColumnName(defaultPredictedLabelColumn)>] Category : string
+type TagsPrediction = {
+    [<ColumnName(defaultPredictedLabelColumn)>] Tags : string
 }
 
 let ctx = MLContext(seed = Nullable 0)
 
-let (model, schema) = ctx.Model.Load(dataPath)
+let (model, schema) = ctx.Model.Load(modelPath)
 
-let engine = ctx.Model.CreatePredictionEngine<Link, CategoryPrediction>(model)
+let engine = ctx.Model.CreatePredictionEngine<Link, TagsPrediction>(model)
 
 let test = {
-    ID = ""
-    Title = "stories"
-    Body = "https://amazon.co.uk"
-    Category = ""
+    Title = "bbc micro"
+    Abstract = "retro computing hardware with bbc micro"
+    Tags = ""
 }
 
 let prediction = engine.Predict(test)
