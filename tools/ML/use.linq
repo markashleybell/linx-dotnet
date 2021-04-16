@@ -21,19 +21,14 @@ let modelPath = Path.Combine(dataPath, "model.zip")
 type Link = {
     [<LoadColumn(0)>] Title : string
     [<LoadColumn(1)>] Abstract : string
-    [<LoadColumn(2)>] Tags : string
-}
-
-[<CLIMutable>]
-type TagsPrediction = {
-    [<ColumnName(defaultPredictedLabelColumn)>] Tags : string
+    [<LoadColumn(2)>][<ColumnName(defaultPredictedLabelColumn)>] Tags : string
 }
 
 let ctx = MLContext(seed = Nullable 0)
 
 let (model, schema) = ctx.Model.Load(modelPath)
 
-let engine = ctx.Model.CreatePredictionEngine<Link, TagsPrediction>(model)
+let engine = ctx.Model.CreatePredictionEngine<Link, Link>(model)
 
 let test = {
     Title = "bbc micro"

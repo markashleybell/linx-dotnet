@@ -30,12 +30,7 @@ let dataPath = Path.Combine(Path.GetDirectoryName(Util.CurrentQueryPath), "testd
 type Link = {
     [<LoadColumn(0)>] Title : string
     [<LoadColumn(1)>] Abstract : string
-    [<LoadColumn(2)>] Tags : string
-}
-
-[<CLIMutable>]
-type TagsPrediction = {
-    [<ColumnName(defaultPredictedLabelColumn)>] Tags : string
+    [<LoadColumn(2)>][<ColumnName(defaultPredictedLabelColumn)>] Tags : string
 }
 
 let ctx = MLContext(seed = Nullable 0)
@@ -60,7 +55,7 @@ let trainingData = dataPartitions.TrainSet
 let testData = dataPartitions.TestSet
 
 let pipeline = EstimatorChain()
-                .Append(ctx.Transforms.Conversion.MapValueToKey(inputColumnName = "Tags", outputColumnName = defaultLabelColumn))
+                .Append(ctx.Transforms.Conversion.MapValueToKey(inputColumnName = defaultPredictedLabelColumn, outputColumnName = defaultLabelColumn))
                 .Append(ctx.Transforms.Text.FeaturizeText(inputColumnName = "Title", outputColumnName = "TitleFeaturized"))
                 .Append(ctx.Transforms.Text.FeaturizeText(inputColumnName = "Abstract", outputColumnName = "AbstractFeaturized"))
                 .Append(ctx.Transforms.Concatenate(defaultFeaturesColumn, "TitleFeaturized", "AbstractFeaturized"))
@@ -72,7 +67,7 @@ let trainingPipeline = pipeline
 
 let trainedModel = trainingPipeline.Fit(trainingData)
 
-let engine = ctx.Model.CreatePredictionEngine<Link, TagsPrediction>(trainedModel)
+let engine = ctx.Model.CreatePredictionEngine<Link, Link>(trainedModel)
 
 let test = {
     Title = "ASP.NET Core Authentication"
