@@ -79,8 +79,8 @@ let test = {
     Tags = ""
 }
 
-// let prediction = engine.Predict(test)
+let prediction = engine.Predict(test)
 
-// prediction.Dump()
+prediction.Dump()
 
-// ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")
+ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")
