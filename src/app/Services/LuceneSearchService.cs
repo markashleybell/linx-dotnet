@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Linx.Domain;
 using Linx.Support;
+using Lucene.Net.Analysis.En;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -59,7 +60,7 @@ namespace Linx.Services
 
             var searcher = new IndexSearcher(reader);
 
-            var analyzer = new StandardAnalyzer(_luceneVersion);
+            var analyzer = new EnglishAnalyzer(_luceneVersion);
 
             var boosts = new Dictionary<string, float> {
                 ["title"] = 1.0f,
@@ -111,7 +112,7 @@ namespace Linx.Services
 
         private void WithIndexWriter(Guid userID, Action<IndexWriter> f, bool overwriteIndex = false, bool applyDeletes = false)
         {
-            var analyzer = new StandardAnalyzer(_luceneVersion);
+            var analyzer = new EnglishAnalyzer(_luceneVersion);
 
             var writerConfig = new IndexWriterConfig(_luceneVersion, analyzer) {
                 OpenMode = overwriteIndex ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
