@@ -42,7 +42,7 @@
                         <a class="nav-link" asp-controller="Users" asp-action="Logout">Log Out</a>
                     </li>
                 </ul>
-                <form class="d-flex" asp-controller="Search" asp-action="Index">
+                <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query" value="@ViewBag.SearchQuery">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>

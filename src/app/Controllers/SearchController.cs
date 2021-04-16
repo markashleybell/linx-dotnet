@@ -21,7 +21,6 @@ namespace Linx.Controllers
                 repository) =>
             _searchService = searchService;
 
-        [HttpPost]
         public IActionResult Index(IndexViewModel model)
         {
             model.Results = _searchService.Search(UserID, model.Query);
