@@ -65,21 +65,28 @@ let trainingPipeline = pipeline
                         .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(defaultLabelColumn, defaultFeaturesColumn))
                         .Append(ctx.Transforms.Conversion.MapKeyToValue(defaultPredictedLabelColumn))
 
-let trainedModel = trainingPipeline.Fit(trainingData)
+let forValidation (x : IEstimator<_>) = 
+    match x with 
+    | :? IEstimator<ITransformer> as y -> y
+    | _ -> failwith "Invalid Cast"
 
-let testMetrics = ctx.MulticlassClassification.Evaluate(trainedModel.Transform(testData))
+let validationResults = ctx.MulticlassClassification.CrossValidate(trainingData, (trainingPipeline |> forValidation), numberOfFolds = 5);
 
+let candidateModels = validationResults |> Seq.sortByDescending (fun f -> f.Metrics.MicroAccuracy) 
+             
 type Metric = { Micro: float; Macro: float; LogLoss: float; LogLossReduction: float; }
-
-let results = seq {
-    yield { 
-        Micro = testMetrics.MicroAccuracy;
-        Macro = testMetrics.MacroAccuracy;
-        LogLoss = testMetrics.LogLoss;
-        LogLossReduction = testMetrics.LogLossReduction; } 
-}
+                 
+let results = candidateModels |> Seq.map (fun f -> { 
+    Micro = f.Metrics.MicroAccuracy;
+    Macro = f.Metrics.MacroAccuracy;
+    LogLoss = f.Metrics.LogLoss;
+    LogLossReduction = f.Metrics.LogLossReduction; })
 
 results.Dump()
+
+let topCandidate = candidateModels |> Seq.head |> (fun m -> m.Model)
+
+let engine = ctx.Model.CreatePredictionEngine<Link, Link>(topCandidate)
 
 let test = {
     Title = "ASP.NET Core Authentication"
@@ -87,10 +94,8 @@ let test = {
     Tags = ""
 }
 
-let engine = ctx.Model.CreatePredictionEngine<Link, Link>(trainedModel)
-
 let prediction = engine.Predict(test)
 
 prediction.Dump()
 
-ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")
+ctx.Model.Save(topCandidate, trainingData.Schema, dataPath + @"\model.zip")
