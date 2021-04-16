@@ -1,5 +1,7 @@
 <Query Kind="FSharpProgram">
+  <Reference Relative="..\..\ml\bin\Debug\net5.0\ml.dll">C:\Src\linx-dotnet\ml\bin\Debug\net5.0\ml.dll</Reference>
   <NuGetReference>Microsoft.ML</NuGetReference>
+  <Namespace>LinxML.Common</Namespace>
   <Namespace>Microsoft.ML</Namespace>
   <Namespace>Microsoft.ML.Calibrators</Namespace>
   <Namespace>Microsoft.ML.Data</Namespace>
@@ -10,21 +12,7 @@
   <RuntimeVersion>5.0</RuntimeVersion>
 </Query>
 
-[<Literal>]
-let defaultPredictedLabelColumn = "PredictedLabel"
-
-let dataPath = Path.Combine(Path.GetDirectoryName(Util.CurrentQueryPath), "testdata")
-
-let modelPath = Path.Combine(dataPath, "model.zip")
-
-[<CLIMutable>]
-type Link = {
-    [<LoadColumn(0)>] Title : string
-    [<LoadColumn(1)>] Abstract : string
-    [<LoadColumn(2)>][<ColumnName(defaultPredictedLabelColumn)>] Tags : string
-}
-
-let ctx = MLContext(seed = Nullable 0)
+let (dataPath, modelPath) = Util.CurrentQueryPath |> getDataAndModelPaths
 
 let (model, schema) = ctx.Model.Load(modelPath)
 

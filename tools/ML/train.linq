@@ -1,6 +1,8 @@
 <Query Kind="FSharpProgram">
+  <Reference Relative="..\..\ml\bin\Debug\net5.0\ml.dll">C:\Src\linx-dotnet\ml\bin\Debug\net5.0\ml.dll</Reference>
   <NuGetReference>Microsoft.Data.SqlClient</NuGetReference>
   <NuGetReference>Microsoft.ML</NuGetReference>
+  <Namespace>LinxML.Common</Namespace>
   <Namespace>Microsoft.Data</Namespace>
   <Namespace>Microsoft.Data.Sql</Namespace>
   <Namespace>Microsoft.Data.SqlClient</Namespace>
@@ -17,35 +19,11 @@
   <RuntimeVersion>5.0</RuntimeVersion>
 </Query>
 
-[<Literal>]
-let defaultLabelColumn = "Label"
-[<Literal>]
-let defaultFeaturesColumn = "Features"
-[<Literal>]
-let defaultPredictedLabelColumn = "PredictedLabel"
+let (dataPath, modelPath) = Util.CurrentQueryPath |> getDataAndModelPaths
 
-let dataPath = Path.Combine(Path.GetDirectoryName(Util.CurrentQueryPath), "testdata")
+let dataSource = "e5754cce-838b-4446-ada8-2d5a6e057555" |> getDataSource
 
-[<CLIMutable>]
-type Link = {
-    [<LoadColumn(0)>] Title : string
-    [<LoadColumn(1)>] Abstract : string
-    [<LoadColumn(2)>][<ColumnName(defaultPredictedLabelColumn)>] Tags : string
-}
-
-let ctx = MLContext(seed = Nullable 0)
-
-let loader = ctx.Data.CreateDatabaseLoader<Link>()
-
-let connectionString = "Server=localhost;Database=linx;Trusted_Connection=yes"
-
-let userId = "e5754cce-838b-4446-ada8-2d5a6e057555";
-
-let sql = sprintf "SELECT Title, Abstract, Tags FROM Links WHERE UserID = '%s'" userId
-
-let dbSource = DatabaseSource(SqlClientFactory.Instance, connectionString, sql);
-
-let data = loader.Load(dbSource);
+let data = loader.Load(dataSource)
 
 // data.Preview(10).Dump()
 
@@ -69,8 +47,6 @@ let trainedModel = trainingPipeline.Fit(trainingData)
 
 let testMetrics = ctx.MulticlassClassification.Evaluate(trainedModel.Transform(testData))
 
-type Metric = { Micro: float; Macro: float; LogLoss: float; LogLossReduction: float; }
-
 let results = seq {
     yield { 
         Micro = testMetrics.MicroAccuracy;
@@ -93,4 +69,4 @@ let prediction = engine.Predict(test)
 
 prediction.Dump()
 
-ctx.Model.Save(trainedModel, trainingData.Schema, dataPath + @"\model.zip")
+ctx.Model.Save(trainedModel, trainingData.Schema, modelPath)
