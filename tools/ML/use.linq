@@ -18,12 +18,25 @@ let (model, schema) = ctx.Model.Load(modelPath)
 
 let engine = ctx.Model.CreatePredictionEngine<Link, Link>(model)
 
-let test = {
+let test1 = {
+    Title = "deploy app with docker"
+    Abstract = "containerising csharp asp.net applications"
+    Tags = ""
+}
+
+let test2 = {
     Title = "bbc micro"
     Abstract = "retro computing hardware with bbc micro"
     Tags = ""
 }
 
-let prediction = engine.Predict(test)
+let test3 = {
+    Title = "azure blob csharp"
+    Abstract = "storage accounts blob cloud azure .net"
+    Tags = ""
+}
 
-prediction.Dump()
+[|test1;test2;test3|] 
+|> Array.map (fun t -> (t.Title, engine.Predict(t).Tags))
+|> Dump
+|> ignore
