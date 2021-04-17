@@ -27,11 +27,6 @@ let data = loader.Load(dataSource)
 
 // data.Preview(10).Dump()
 
-let dataPartitions = ctx.Data.TrainTestSplit(data, testFraction = 0.1)
-
-let trainingData = dataPartitions.TrainSet
-let testData = dataPartitions.TestSet
-
 let pipeline = EstimatorChain()
                 .Append(ctx.Transforms.Conversion.MapValueToKey(inputColumnName = defaultPredictedLabelColumn, outputColumnName = defaultLabelColumn))
                 .Append(ctx.Transforms.Text.FeaturizeText(inputColumnName = "Title", outputColumnName = "TitleFeaturized"))
@@ -43,7 +38,7 @@ let trainingPipeline = pipeline
                         .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(defaultLabelColumn, defaultFeaturesColumn))
                         .Append(ctx.Transforms.Conversion.MapKeyToValue(defaultPredictedLabelColumn))
 
-let validationResults = ctx.MulticlassClassification.CrossValidate(trainingData, (trainingPipeline |> forValidation), numberOfFolds = 5);
+let validationResults = ctx.MulticlassClassification.CrossValidate(data, (trainingPipeline |> forValidation), numberOfFolds = 5);
 
 let candidateModels = validationResults |> Seq.sortByDescending (fun f -> f.Metrics.MicroAccuracy) 
 
@@ -69,4 +64,4 @@ let prediction = engine.Predict(test)
 
 prediction.Dump()
 
-ctx.Model.Save(topCandidate, trainingData.Schema, modelPath)
+ctx.Model.Save(topCandidate, data.Schema, modelPath)
