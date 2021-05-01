@@ -1,0 +1,22 @@
+python3 -m venv .venv
+
+.\.venv\scripts\Activate.ps1
+
+python -m pip install --upgrade pip
+
+pip install -r .\requirements.txt
+
+ipython kernel install --user --name=linx --display-name=Linx
+
+
+
+
+
+
+
+https://github.com/gauravtheP/Stackoverflow-Tag-Prediction/blob/master/SO-Tag-Prediction/.ipynb_checkpoints/SO-Tag-Prediction-checkpoint.ipynb
+https://medium.com/analytics-vidhya/movie-tag-s-prediction-using-machine-learning-models-d5fde119db6d
+https://medium.com/@18loveagarwal9/relevant-tag-prediction-using-deep-learning-f0cc9c31fe96
+https://medium.com/deep-learning-with-keras/how-to-solve-multi-label-classification-problems-in-deep-learning-with-tensorflow-keras-7fb933243595
+
+https://docs.microsoft.com/en-us/dotnet/machine-learning/tutorials/text-classification-tf

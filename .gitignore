@@ -370,3 +370,6 @@ src/extension/dist/
 
 # ML.NET test model
 /tools/ML/testdata/model.zip
+
+# Python virtual environment
+.venv
