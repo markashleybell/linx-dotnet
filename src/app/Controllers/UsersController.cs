@@ -70,7 +70,6 @@ namespace Linx.Controllers
             return Redirect(returnUrl);
         }
 
-        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

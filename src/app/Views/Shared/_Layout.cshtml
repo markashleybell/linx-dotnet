@@ -19,34 +19,37 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" asp-controller="Links" asp-action="Index">LINX</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Links" asp-action="Create">New Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="tags-dropdown" data-bs-toggle="dropdown" aria-expanded="false">Tags</a>
-                        <ul class="dropdown-menu" aria-labelledby="tags-dropdown">
-                            <li><a class="dropdown-item" asp-controller="Tags" asp-action="Index">All Tags</a></li>
-                            <li class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" asp-controller="Tags" asp-action="Merge">Manage Tags</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link">@(User?.FindFirst(ClaimTypes.Email)?.Value)</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Users" asp-action="Logout">Log Out</a>
-                    </li>
-                </ul>
-                <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query" value="@ViewBag.SearchQuery">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="Links" asp-action="Create">New Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="tags-dropdown" data-bs-toggle="dropdown" aria-expanded="false">Tags</a>
+                            <ul class="dropdown-menu" aria-labelledby="tags-dropdown">
+                                <li><a class="dropdown-item" asp-controller="Tags" asp-action="Index">All Tags</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Tags" asp-action="Merge">Manage Tags</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link">@(User?.FindFirst(ClaimTypes.Email)?.Value)</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Users" asp-action="Logout">Log Out</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query" value="@ViewBag.SearchQuery">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            }
         </div>
     </nav>
     <main class="container">
