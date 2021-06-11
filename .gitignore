@@ -367,3 +367,10 @@ FodyWeavers.xsd
 # Webpack output
 src/app/wwwroot/js/dist/
 src/extension/dist/
+
+# ML.NET test model
+/tools/ML/testdata/model.zip
+/tools/ML/multi-label/data/*
+
+# Python virtual environment
+.venv
