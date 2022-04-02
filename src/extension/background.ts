@@ -1,6 +1,8 @@
 import {
+    handleRuntimeError,
     onMessageReceived,
     icons,
+    isNotBookmarkable,
     PageStateResponse,
     PageStateRequest,
 } from './common';
@@ -18,13 +20,13 @@ onMessageReceived('pagestateresponse', (msg: PageStateResponse, sender) => {
     }
 });
 
-chrome.tabs.onActivated.addListener((tab) => {
-    chrome.action.disable(tab.tabId);
-    chrome.tabs.sendMessage(tab.tabId, new PageStateRequest());
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    chrome.action.disable(activeInfo.tabId);
+    chrome.tabs.sendMessage(activeInfo.tabId, new PageStateRequest(), handleRuntimeError('background: activated'));
 });
 
 chrome.tabs.onUpdated.addListener((tabId, _, tab) => {
-    if (tab.url.startsWith('chrome://')) {
+    if (isNotBookmarkable(tab.url)) {
         chrome.action.disable(tabId);
     }
 });

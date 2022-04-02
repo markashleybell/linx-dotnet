@@ -101,6 +101,7 @@ export function onMessageReceived(
         if (msg.type === messageType) {
             callback(msg, sender);
         }
+        return true;
     });
 }
 
@@ -168,4 +169,34 @@ export function validateSettings(settings: { [key: string]: any }): [boolean, st
     const apiKey = settings[Setting.ApiKey]?.trim();
 
     return apiUrl && apiKey ? [true, apiUrl, apiKey] : [false, null, null];
+}
+
+export function isBookmarkable(url: string) {
+    return url && (url.startsWith('http://') || url.startsWith('https://'));
+}
+
+export function isNotBookmarkable(url: string) {
+    return !isBookmarkable(url);
+}
+
+export function handleRuntimeError(label: string) {
+    return function(...args: any[]) {
+        /* 
+        This whole function is only needed to stop an *uncatchable* error 
+        being logged because of the ridiculous way Chrome implements error 
+        handling for certain runtime errors.
+
+        Basically, some errors which are thrown by sendMessage can *only* 
+        be suppressed by accessing the chrome.runtime.lastError global; 
+        wrapping the calling code in a try/catch doesn't work, because 
+        these errors are thrown by the Chrome runtime itself (not the JS).
+        
+        So if we *don't* do this, then a whole bunch of errors show up in 
+        the console and the extension settings, which we can't do anything 
+        about.
+        */
+        if(chrome.runtime.lastError) {
+            console.log(label, chrome.runtime.lastError, args);
+        }
+    }  
 }

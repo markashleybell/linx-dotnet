@@ -1,5 +1,7 @@
 import {
     ApiErrorResponse,
+    handleRuntimeError,
+    isNotBookmarkable,
     onMessageReceived,
     PageDetailsResponse,
     PageDetailsRequest,
@@ -48,9 +50,17 @@ window.addEventListener('load', () => {
             active: true,
         });
 
+        if (!tabs.length) {
+            return;
+        }
+
         const currentTab = tabs[0];
 
-        chrome.tabs.sendMessage(currentTab.id, new PageDetailsRequest());
+        if (isNotBookmarkable(currentTab.url)) {
+            return;
+        }
+
+        chrome.tabs.sendMessage(currentTab.id, new PageDetailsRequest(), handleRuntimeError('popup: load'));
 
         try {
             const tagsUrl = apiUrl + '/tags';
@@ -106,7 +116,7 @@ window.addEventListener('load', () => {
                     },
                 });
 
-                chrome.tabs.sendMessage(currentTab.id, new LinkSavedRequest());
+                chrome.tabs.sendMessage(currentTab.id, new LinkSavedRequest(), handleRuntimeError('popup: save'));
 
                 showSuccessStatus(status, 'Saved', 1000, window.close);
             } catch (e) {

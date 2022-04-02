@@ -1,4 +1,5 @@
 import {
+    handleRuntimeError,
     onMessageReceived,
     PageDetailsResponse,
     PageStateResponse,
@@ -14,11 +15,11 @@ let state = new PageStateResponse(currentUrl, false, true);
 onMessageReceived('linksavedrequest', () => {
     state = new PageStateResponse(currentUrl, true, false);
 
-    chrome.runtime.sendMessage(state);
+    chrome.runtime.sendMessage(state, handleRuntimeError('content: linksavedrequest'));
 });
 
 onMessageReceived('pagestaterequest', () => {
-    chrome.runtime.sendMessage(state);
+    chrome.runtime.sendMessage(state, handleRuntimeError('content: pagestaterequest'));
 });
 
 onMessageReceived('pagedetailsrequest', () => {
@@ -28,7 +29,7 @@ onMessageReceived('pagedetailsrequest', () => {
         window.getSelection().toString()
     );
 
-    chrome.runtime.sendMessage(pageDetailsResponse);
+    chrome.runtime.sendMessage(pageDetailsResponse, handleRuntimeError('content: pagedetailsrequest'));
 });
 
 window.addEventListener('load', () => {
@@ -58,6 +59,6 @@ window.addEventListener('load', () => {
         // rather than doing a new remote call every time
         state = new PageStateResponse(currentUrl, response.exists, false);
 
-        chrome.runtime.sendMessage(state);
+        chrome.runtime.sendMessage(state, handleRuntimeError('content: load'));
     });
 });
