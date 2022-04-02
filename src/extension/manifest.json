@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Linx",
-    "version": "0.9",
+    "version": "0.10",
     "description": "Save a bookmark to Linx.",
     "icons": {
         "16": "assets/favicon-16x16.png",
