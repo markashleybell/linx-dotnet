@@ -1,7 +1,8 @@
 /// <binding ProjectOpened='watch-scss' />
 
 const gulp = require('gulp');
-const sass = require('gulp-sass');
+const sassCompiler = require('sass');
+const sass = require('gulp-sass')(sassCompiler);
 const autoprefixer = require('gulp-autoprefixer');
 
 const scssOptions = {

@@ -51,15 +51,12 @@ a {
 .tag-links .badge, .query-tags .badge {
     margin-right: 6px;
 }
-
 .tag-links a:link, .tag-links a:visited, .tag-links a:hover, .tag-links a:active, .query-tags a:link, .query-tags a:visited, .query-tags a:hover, .query-tags a:active {
     color: #ffffff;
 }
-
 .tag-links a.bg-primary:hover, .query-tags a.bg-primary:hover {
     background-color: #0143a3 !important;
 }
-
 .tag-links a.bg-secondary:hover, .query-tags a.bg-secondary:hover {
     background-color: #3d4246 !important;
 }
@@ -68,7 +65,6 @@ a {
     padding: 0;
     margin-left: 20px;
 }
-
 .tag-links .btn-copy-tags img {
     max-width: 12px;
     display: block;
@@ -78,24 +74,19 @@ a {
     padding: 30px 0;
     text-align: center;
 }
-
 .tag-cloud a:link, .tag-cloud a:visited, .tag-cloud a:hover, .tag-cloud a:active {
     color: #ffffff;
 }
-
 .tag-cloud a.bg-primary:hover {
     background-color: #0143a3 !important;
 }
-
 .tag-cloud a.bg-secondary:hover {
     background-color: #3d4246 !important;
 }
-
 .tag-cloud > .badge {
     font-size: 1rem;
     margin: 5px 5px;
 }
-
 .tag-cloud > .badge > .badge {
     margin-left: 10px;
 }
@@ -118,12 +109,12 @@ a {
     background-color: #007bff;
     display: inline-flex;
     align-items: center;
-    padding: .15em .4em;
+    padding: 0.15em 0.4em;
     font-size: 90%;
     font-weight: 700;
     white-space: nowrap;
-    border-radius: .25rem;
-    margin-top: .375rem;
+    border-radius: 0.25rem;
+    margin-top: 0.375rem;
     margin-right: 5px;
     transition: background-color 1600ms ease-in;
 }
@@ -146,7 +137,7 @@ a {
     width: 100px;
     text-transform: lowercase;
     padding: 0;
-    margin-top: .375rem;
+    margin-top: 0.375rem;
 }
 
 .mab-bootstrap-taginput-input.mab-bootstrap-taginput-input-multicase {
