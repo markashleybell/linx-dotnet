@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "webpack --mode=production",
+        "build-dev": "webpack --mode=development",
         "watch-ts": "webpack --mode=development --watch"
     },
     "repository": {
@@ -22,7 +23,7 @@
         "@types/chrome": "^0.0.180",
         "@types/mustache": "^4.1.2",
         "clean-webpack-plugin": "^4.0.0",
-        "copy-webpack-plugin": "^9.0.0",
+        "copy-webpack-plugin": "^10.2.4",
         "source-map-loader": "^3.0.1",
         "ts-loader": "^9.2.8",
         "ts-node": "^10.7.0",
