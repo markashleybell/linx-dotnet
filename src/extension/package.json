@@ -1,6 +1,6 @@
 {
     "name": "linx-chrome-extension",
-    "version": "1.0.0",
+    "version": "0.11.0",
     "description": "The Linx bookmark manager Chrome Extension.",
     "main": "index.js",
     "scripts": {
