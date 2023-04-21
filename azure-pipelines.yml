@@ -20,9 +20,9 @@ steps:
     msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
 - task: NodeTool@0
-  displayName: 'Install NodeJS 12.18.3 Tooling'
+  displayName: 'Install NodeJS 18.16.0 Tooling'
   inputs:
-    versionSpec: '12.18.3'
+    versionSpec: '18.16.0'
 
 - task: Npm@1
   displayName: 'NPM Package Restore'
