@@ -12,6 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Remove="package.json" />
+        <Content Remove="package-lock.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Content Remove="wwwroot\js\index.ts" />
         <Content Remove="wwwroot\js\taginput.ts" />
         <Content Remove="wwwroot\js\tagmanager.ts" />
