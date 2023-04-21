@@ -12,6 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Remove="package.json" />
+        <Content Remove="package-lock.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Content Remove="wwwroot\js\index.ts" />
         <Content Remove="wwwroot\js\taginput.ts" />
         <Content Remove="wwwroot\js\tagmanager.ts" />
@@ -31,16 +36,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.0.78" />
-        <PackageReference Include="Lucene.Net" Version="4.8.0-beta00014" />
-        <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00014" />
-        <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00014" />
-        <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.2" />
-        <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
+        <PackageReference Include="Dapper" Version="2.0.123" />
+        <PackageReference Include="Lucene.Net" Version="4.8.0-beta00016" />
+        <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00016" />
+        <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00016" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+        <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.0.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.333">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
