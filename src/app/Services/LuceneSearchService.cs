@@ -103,7 +103,7 @@ namespace Linx.Services
                 new StringField("id", link.ID.ToString(), Field.Store.YES),
                 new TextField("title", link.Title, Field.Store.YES),
                 new StringField("url", link.Url, Field.Store.YES),
-                new TextField("abstract", link.Abstract, Field.Store.YES),
+                new TextField("abstract", link.Abstract ?? string.Empty, Field.Store.YES),
                 new TextField("tags", string.Join("|", link.Tags.Select(t => t.Label)), Field.Store.YES)
             };
 
