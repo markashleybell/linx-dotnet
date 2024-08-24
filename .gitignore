@@ -374,3 +374,6 @@ src/extension/dist/
 
 # Python virtual environment
 .venv
+
+# Development settings
+appsettings.Development.json
